@@ -3,11 +3,11 @@
 @theme inline {
   --font-sans: var(--font-inter), -apple-system, BlinkMacSystemFont, "Segoe UI",
     Roboto, sans-serif;
-  --font-display: var(--font-archivo), var(--font-inter), sans-serif;
+  --font-mono: var(--font-plex-mono), "SF Mono", Consolas, monospace;
 }
 
 @theme {
-  /* ===== Guinda institucional UNSA (escala) ===== */
+  /* ===== Guinda institucional UNSA — solo acciones y acentos ===== */
   --color-guinda-50: #fbeff5;
   --color-guinda-100: #f7dfeb;
   --color-guinda-200: #efb9d5;
@@ -21,59 +21,41 @@
   --color-guinda-950: #2b0117;
   --color-guinda: #8b004a;
 
-  /* ===== Neutros (sistema Stripe adaptado) ===== */
-  --color-navy: #061b31;
-  --color-ink: #273951;
+  /* ===== Neutros limpios (Stripe × Material 3) ===== */
+  --color-navy: #0a1f33;
+  --color-ink: #33475e;
   --color-muted: #64748d;
-  --color-crema: #f2efe7;
-  --color-crema-strong: #eae5d8;
-  --color-linea: #d4dee9;
-  --color-superficie: #e5edf5;
+  --color-faint: #94a3b8;
+  --color-paper: #ffffff;
+  --color-neutro: #f7f8fa;
+  --color-linea: #e2e8f0;
+  --color-linea-strong: #cbd5e1;
 
-  /* ===== Acento (solo gradientes y alertas) ===== */
-  --color-naranja: #ff6118;
+  /* ===== Escala semántica UV (OMS, tonos calibrados) ===== */
+  --color-uv-low: #37945c;
+  --color-uv-moderate: #c29a08;
+  --color-uv-high: #d97a06;
+  --color-uv-veryhigh: #d13a1f;
+  --color-uv-extreme: #9d5ba3;
 
-  /* ===== Escala semántica UV (OMS) ===== */
-  --color-uv-low: #3ea72d;
-  --color-uv-moderate: #d9b504;
-  --color-uv-high: #f18b00;
-  --color-uv-veryhigh: #e53210;
-  --color-uv-extreme: #b567a4;
+  /* ===== Elevación (difusa, muy suave) ===== */
+  --shadow-z1: 0 1px 2px rgb(10 31 51 / 0.04);
+  --shadow-z2: 0 2px 12px rgb(10 31 51 / 0.06);
+  --shadow-z3: 0 8px 32px rgb(10 31 51 / 0.08);
 
-  /* ===== Elevación Stripe ===== */
-  --shadow-z1: 0 1px 2px rgb(0 0 0 / 0.04);
-  --shadow-z2: 0 4px 12px rgb(0 0 0 / 0.08);
-  --shadow-z3: 0 10px 40px rgb(0 0 0 / 0.1);
-  --shadow-z4: 0 20px 60px rgb(0 0 0 / 0.15);
+  --radius-btn: 6px;
+  --radius-card: 12px;
 
-  --radius-btn: 4px;
-  --radius-card: 6px;
+  --animate-fade-up: fade-up 0.7s cubic-bezier(0.21, 0.47, 0.32, 0.98) both;
 
-  --animate-blob-a: blob-a 18s ease-in-out infinite alternate;
-  --animate-blob-b: blob-b 22s ease-in-out infinite alternate;
-  --animate-blob-c: blob-c 26s ease-in-out infinite alternate;
-  --animate-marquee: marquee 32s linear infinite;
-
-  @keyframes blob-a {
-    from { transform: translate(-12%, -8%) scale(1) rotate(0deg); }
-    to   { transform: translate(14%, 10%) scale(1.25) rotate(25deg); }
-  }
-  @keyframes blob-b {
-    from { transform: translate(10%, 6%) scale(1.1) rotate(0deg); }
-    to   { transform: translate(-14%, -12%) scale(0.9) rotate(-20deg); }
-  }
-  @keyframes blob-c {
-    from { transform: translate(0%, 12%) scale(0.95); }
-    to   { transform: translate(8%, -10%) scale(1.2); }
-  }
-  @keyframes marquee {
-    from { transform: translateX(0); }
-    to   { transform: translateX(-50%); }
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
   }
 }
 
 body {
-  background-color: var(--color-crema);
+  background-color: var(--color-paper);
   color: var(--color-navy);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
@@ -85,72 +67,47 @@ body {
   color: #fff;
 }
 
-/* ===== Display neo-brutalista (Archivo expandida) ===== */
+/* ===== Display: ligera, precisa (Stripe sohne-light) ===== */
 .display {
-  font-family: var(--font-display);
-  font-stretch: 115%;
-  letter-spacing: -0.03em;
-  line-height: 0.96;
+  font-weight: 300;
+  letter-spacing: -0.025em;
+  line-height: 1.08;
 }
 
-/* ===== Grano sutil (atmósfera) ===== */
-.grain::after {
-  content: "";
+/* Numerales de datos: tabulares, ligeros */
+.tnum {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+}
+
+/* Micro-etiqueta técnica (mono) */
+.microlabel {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+/* ===== Fondo: papel milimetrado sutil (vernáculo económico) ===== */
+.pattern-graph {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  opacity: 0.035;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-image:
+    linear-gradient(to right, rgb(10 31 51 / 0.045) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(10 31 51 / 0.045) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(ellipse 90% 80% at 50% 0%, black 30%, transparent 78%);
 }
-
-/* ===== Mesh gradient del hero (guinda → naranja, estilo Stripe) ===== */
-.mesh {
+.pattern-graph::after {
+  content: "";
   position: absolute;
   inset: 0;
-  overflow: hidden;
-  background:
-    radial-gradient(60% 80% at 85% 10%, rgb(255 97 24 / 0.1), transparent 60%),
-    radial-gradient(50% 70% at 10% 90%, rgb(139 0 74 / 0.08), transparent 65%),
-    #ffffff;
-}
-.mesh > i {
-  position: absolute;
-  border-radius: 9999px;
-  filter: blur(90px);
-  will-change: transform;
-}
-.mesh > i:nth-child(1) {
-  width: 55vw;
-  height: 55vw;
-  left: -12%;
-  top: -22%;
-  background: radial-gradient(circle at 30% 30%, rgb(139 0 74 / 0.28), transparent 70%);
-  animation: var(--animate-blob-a);
-}
-.mesh > i:nth-child(2) {
-  width: 44vw;
-  height: 44vw;
-  right: -10%;
-  top: -8%;
-  background: radial-gradient(circle at 60% 40%, rgb(255 97 24 / 0.2), transparent 70%);
-  animation: var(--animate-blob-b);
-}
-.mesh > i:nth-child(3) {
-  width: 38vw;
-  height: 38vw;
-  right: 18%;
-  bottom: -28%;
-  background: radial-gradient(circle at 50% 50%, rgb(201 78 144 / 0.18), transparent 70%);
-  animation: var(--animate-blob-c);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .mesh > i {
-    animation: none;
-  }
-  .animate-marquee {
-    animation: none;
-  }
+  background-image:
+    linear-gradient(to right, rgb(10 31 51 / 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(10 31 51 / 0.05) 1px, transparent 1px);
+  background-size: 240px 240px;
 }
 
 /* ===== Enlace con subrayado animado ===== */
@@ -163,4 +120,10 @@ body {
 }
 .link-under:hover {
   background-size: 100% 1px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-up {
+    animation: none;
+  }
 }

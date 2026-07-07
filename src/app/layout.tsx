@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Archivo } from "next/font/google";
+import { Inter, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
 
 const inter = Inter({
@@ -8,20 +8,51 @@ const inter = Inter({
   display: "swap",
 });
 
-const archivo = Archivo({
+const plexMono = IBM_Plex_Mono({
   subsets: ["latin"],
-  variable: "--font-archivo",
-  axes: ["wdth"],
+  weight: ["400", "500"],
+  variable: "--font-plex-mono",
   display: "swap",
 });
 
+const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+
 export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
   title: {
     default: "Brigada Ambiental FEC · RSU UNSA 2026-A",
     template: "%s · Brigada Ambiental FEC",
   },
   description:
-    "Plataforma del proyecto de Responsabilidad Social Universitaria de la Facultad de Economía (UNSA): prevención frente a la radiación solar en Arequipa, monitor UV en vivo, brigada estudiantil y Foro Ambiental y de Salud 2026.",
+    "Plataforma del proyecto de Responsabilidad Social Universitaria de la Facultad de Economía (UNSA): monitor UV en vivo de Arequipa, prevención frente a la radiación solar (D.S. N.° 003-2026-SA), brigada estudiantil y Foro Ambiental y de Salud 2026.",
+  keywords: [
+    "RSU",
+    "Responsabilidad Social Universitaria",
+    "UNSA",
+    "Facultad de Economía",
+    "radiación solar Arequipa",
+    "índice UV Arequipa",
+    "fotoprotección",
+    "brigada ambiental",
+    "D.S. 003-2026-SA",
+  ],
+  authors: [{ name: "Brigada Ambiental Universitaria — Facultad de Economía, UNSA" }],
+  openGraph: {
+    type: "website",
+    locale: "es_PE",
+    siteName: "Brigada Ambiental FEC",
+    title: "Brigada Ambiental FEC · RSU UNSA 2026-A",
+    description:
+      "Prevención frente a la radiación solar en Arequipa: monitor UV en vivo, brigada estudiantil y Foro Ambiental y de Salud 2026.",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+  alternates: {
+    canonical: "/",
+  },
 };
 
 export default function RootLayout({
@@ -29,7 +60,7 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="es">
-      <body className={`${inter.variable} ${archivo.variable} antialiased`}>
+      <body className={`${inter.variable} ${plexMono.variable} antialiased`}>
         {children}
       </body>
     </html>

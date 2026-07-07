@@ -46,7 +46,7 @@ export function AforoBar({ eventId, initialRegistered, capacity }: AforoBarProps
     <div>
       <div className="flex items-end justify-between">
         <div>
-          <span className="display text-5xl font-extrabold tracking-tight text-navy">
+          <span className="tnum text-5xl font-extralight tracking-tight text-navy">
             {remaining}
           </span>
           <span className="ml-2 text-sm font-medium text-muted">
@@ -59,7 +59,7 @@ export function AforoBar({ eventId, initialRegistered, capacity }: AforoBarProps
       </div>
 
       <div
-        className="mt-4 h-2.5 w-full overflow-hidden rounded-full bg-superficie"
+        className="mt-4 h-1.5 w-full overflow-hidden rounded-full bg-linea"
         role="progressbar"
         aria-valuenow={registered}
         aria-valuemin={0}

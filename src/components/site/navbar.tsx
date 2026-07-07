@@ -1,14 +1,15 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useState } from "react";
-import { Menu, X, Sun } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { ButtonLink } from "@/components/ui/button";
 
 const links = [
   { href: "/#proyecto", label: "El proyecto" },
   { href: "/#normativa", label: "Normativa" },
-  { href: "/#actividades", label: "Actividades" },
+  { href: "/#coordinacion", label: "Coordinación" },
   { href: "/foro", label: "Foro 2026" },
 ];
 
@@ -16,18 +17,32 @@ export function Navbar() {
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-linea bg-white/85 backdrop-blur-md">
+    <header className="sticky top-0 z-50 border-b border-linea bg-white/90 backdrop-blur-md">
       <nav className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-        <Link href="/" className="flex items-center gap-2.5">
-          <span className="flex h-9 w-9 items-center justify-center rounded-[4px] bg-guinda-600 text-white shadow-z1">
-            <Sun className="h-5 w-5" strokeWidth={2.2} />
-          </span>
-          <span className="leading-none">
-            <span className="display block text-[15px] font-bold tracking-tight text-navy">
-              BRIGADA AMBIENTAL
+        <Link href="/" className="flex items-center gap-3">
+          <Image
+            src="/brand/logo-unsa.svg"
+            alt="Universidad Nacional de San Agustín de Arequipa"
+            width={36}
+            height={36}
+            unoptimized
+            priority
+          />
+          <Image
+            src="/brand/logo-fec.svg"
+            alt="Facultad de Economía"
+            width={36}
+            height={36}
+            unoptimized
+            priority
+          />
+          <span className="hidden h-6 w-px bg-linea sm:block" aria-hidden />
+          <span className="leading-tight">
+            <span className="block text-[14px] font-medium tracking-tight text-navy">
+              Brigada Ambiental
             </span>
-            <span className="block text-[11px] font-medium tracking-[0.14em] text-muted">
-              FACULTAD DE ECONOMÍA · UNSA
+            <span className="microlabel block text-[9px] text-faint">
+              Facultad de Economía · UNSA
             </span>
           </span>
         </Link>
@@ -64,7 +79,7 @@ export function Navbar() {
               key={l.href}
               href={l.href}
               onClick={() => setOpen(false)}
-              className="block border-b border-superficie py-3 text-[15px] text-ink"
+              className="block border-b border-neutro py-3 text-[15px] text-ink"
             >
               {l.label}
             </Link>

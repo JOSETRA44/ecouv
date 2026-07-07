@@ -6,7 +6,7 @@ export const metadata: Metadata = { title: "Registro de brigadistas" };
 export default function RegistroPage() {
   return (
     <div className="w-full max-w-md rounded-card border border-linea bg-white p-8 shadow-z3 sm:p-10">
-      <h1 className="display text-3xl font-bold text-navy">
+      <h1 className="display text-3xl text-navy">
         Únete a la brigada
       </h1>
       <p className="mt-2 text-sm leading-relaxed text-muted">

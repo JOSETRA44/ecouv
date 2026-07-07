@@ -11,7 +11,7 @@ interface StatCounterProps {
   detail: string;
 }
 
-/** Cifra gigante (acento brutalista) que cuenta hasta su valor al entrar en viewport. */
+/** Cifra tabular ligera que cuenta hasta su valor al entrar en viewport. */
 export function StatCounter({ value, prefix = "", suffix = "", label, detail }: StatCounterProps) {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-60px" });
@@ -25,7 +25,7 @@ export function StatCounter({ value, prefix = "", suffix = "", label, detail }: 
       return;
     }
     const controls = animate(0, value, {
-      duration: 1.6,
+      duration: 1.4,
       ease: [0.16, 1, 0.3, 1],
       onUpdate: (v) => setDisplay(Math.round(v)),
     });
@@ -33,16 +33,18 @@ export function StatCounter({ value, prefix = "", suffix = "", label, detail }: 
   }, [inView, value, reduce]);
 
   return (
-    <div ref={ref} className="border-l-2 border-guinda-600 pl-5">
-      <div className="display text-6xl font-extrabold tracking-tighter text-navy sm:text-7xl">
+    <div ref={ref} className="relative border-t border-linea pt-6">
+      <span
+        className="absolute -top-px left-0 h-[2px] w-8 bg-guinda-600"
+        aria-hidden
+      />
+      <div className="tnum text-5xl font-extralight tracking-tight text-navy">
         {prefix}
         {display.toLocaleString("es-PE")}
         {suffix}
       </div>
-      <div className="mt-2 text-sm font-semibold uppercase tracking-[0.12em] text-guinda-700">
-        {label}
-      </div>
-      <p className="mt-1 max-w-[26ch] text-sm leading-relaxed text-muted">{detail}</p>
+      <div className="microlabel mt-3 text-guinda-700">{label}</div>
+      <p className="mt-2 max-w-[28ch] text-sm leading-relaxed text-muted">{detail}</p>
     </div>
   );
 }

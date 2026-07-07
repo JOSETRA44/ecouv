@@ -7,7 +7,7 @@ const tones: Record<Tone, string> = {
   guinda: "bg-guinda-50 text-guinda-700 border-guinda-200",
   success: "bg-[#d1fae5] text-[#065f46] border-[#a7f3d0]",
   alert: "bg-[#fee2e2] text-[#991b1b] border-[#fecaca]",
-  neutral: "bg-superficie text-ink border-linea",
+  neutral: "bg-neutro text-ink border-linea",
 };
 
 interface BadgeProps extends HTMLAttributes<HTMLSpanElement> {

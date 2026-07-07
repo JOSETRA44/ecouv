@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import {
   CalendarClock,
   Camera,
   ClipboardCheck,
   LogOut,
-  Sun,
 } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { signOutBrigadista } from "@/features/brigada/actions";
@@ -51,15 +51,26 @@ export default async function BrigadaPage() {
   const status = statusCopy[statusKey];
 
   return (
-    <div className="min-h-dvh bg-crema">
+    <div className="min-h-dvh bg-neutro">
       <header className="border-b border-linea bg-white">
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-          <Link href="/" className="flex items-center gap-2.5">
-            <span className="flex h-9 w-9 items-center justify-center rounded-[4px] bg-guinda-600 text-white">
-              <Sun className="h-5 w-5" strokeWidth={2.2} />
-            </span>
-            <span className="display text-[15px] font-bold tracking-tight text-navy">
-              PORTAL DE BRIGADISTAS
+          <Link href="/" className="flex items-center gap-3">
+            <Image
+              src="/brand/logo-unsa.svg"
+              alt="UNSA"
+              width={32}
+              height={32}
+              unoptimized
+            />
+            <Image
+              src="/brand/logo-fec.svg"
+              alt="Facultad de Economía"
+              width={32}
+              height={32}
+              unoptimized
+            />
+            <span className="text-sm font-medium tracking-tight text-navy">
+              Portal de brigadistas
             </span>
           </Link>
           <form action={signOutBrigadista}>
@@ -76,12 +87,12 @@ export default async function BrigadaPage() {
       <main className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
-            <p className="text-sm font-semibold uppercase tracking-[0.14em] text-guinda-600">
+            <p className="microlabel text-guinda-700">
               {profile?.section
                 ? `Sección ${profile.section} · Economía Política 2`
                 : "Brigada Ambiental FEC"}
             </p>
-            <h1 className="display mt-2 text-4xl font-bold text-navy">
+            <h1 className="display mt-2 text-4xl text-navy">
               Hola, {profile?.full_name?.split(" ")[0] || "brigadista"}.
             </h1>
           </div>
@@ -131,7 +142,7 @@ export default async function BrigadaPage() {
         </div>
 
         <div className="mt-10 rounded-card border border-linea bg-white p-7 shadow-z1">
-          <h2 className="text-xs font-semibold uppercase tracking-[0.16em] text-muted">
+          <h2 className="microlabel text-muted">
             Mi perfil
           </h2>
           <dl className="mt-4 grid gap-x-8 gap-y-3 text-sm sm:grid-cols-2 lg:grid-cols-4">
