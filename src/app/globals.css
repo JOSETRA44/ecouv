@@ -143,6 +143,24 @@ body {
   transform: scaleX(1);
 }
 
+/* ===== Fondo vectorial del hero: dibujo técnico animado =====
+   Deriva de trazo discontinuo (flujo) y pulso de nodos (datos vivos). */
+@keyframes iso-drift {
+  to { stroke-dashoffset: -560; }
+}
+@keyframes node-pulse {
+  0%, 100% { opacity: 0.08; transform: scale(1); }
+  50%      { opacity: 0.28; transform: scale(1.5); }
+}
+
+.iso-drift { animation: iso-drift 60s linear infinite; }
+.iso-drift-slow { animation: iso-drift 110s linear infinite; }
+.node-pulse {
+  animation: node-pulse 7s ease-in-out infinite;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .animate-fade-up {
     animation: none;
@@ -150,4 +168,8 @@ body {
   .nav-link::after {
     transition: none;
   }
+  .iso-drift, .iso-drift-slow, .node-pulse {
+    animation: none;
+  }
 }
+

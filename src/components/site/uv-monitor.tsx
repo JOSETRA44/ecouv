@@ -46,7 +46,7 @@ function AnimatedValue({ value }: { value: number }) {
     function tick(now: number) {
       const p = Math.min((now - t0) / dur, 1);
       const eased = 1 - Math.pow(1 - p, 3); // ease-out cubic
-      el.textContent = (value * eased).toFixed(1);
+      el!.textContent = (value * eased).toFixed(1);
       if (p < 1) raf = requestAnimationFrame(tick);
     }
 
@@ -102,7 +102,7 @@ export function UvMonitor() {
         initial={{ opacity: 0, y: 24 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7, delay: 0.25, ease: [0.21, 0.47, 0.32, 0.98] }}
-        className="w-full max-w-md overflow-hidden rounded-2xl bg-white shadow-[6px_6px_36px_-4px_rgba(10,31,51,0.12)]"
+        className="w-full max-w-md overflow-hidden rounded-2xl border border-white/60 bg-white/85 shadow-[6px_6px_36px_-4px_rgba(10,31,51,0.12)] ring-1 ring-black/[0.04] backdrop-blur-xl"
       >
         <div className="p-7 sm:p-8">
           {/* ─── Header ─── */}

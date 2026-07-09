@@ -8,6 +8,7 @@ import {
 } from "lucide-react";
 import { ButtonLink } from "@/components/ui/button";
 import { UvMonitor } from "@/components/site/uv-monitor";
+import { HeroBackdrop } from "@/components/site/hero-backdrop";
 import { Reveal } from "@/components/site/reveal";
 import { StatCounter } from "@/components/site/stat-counter";
 
@@ -32,9 +33,12 @@ export default function HomePage() {
       />
 
       {/* ============ HERO ============ */}
-      <section className="relative overflow-hidden border-b border-linea bg-white">
+      <section className="relative isolate overflow-hidden border-b border-linea bg-white">
         <div className="pattern-graph" aria-hidden />
-        <div className="relative mx-auto grid max-w-7xl items-center gap-14 px-4 py-20 sm:px-6 lg:grid-cols-[1.05fr_0.95fr] lg:px-8 lg:py-28">
+        {/* Fondo vectorial a medida: curvas de indiferencia + red de datos */}
+        <HeroBackdrop />
+
+        <div className="relative z-10 mx-auto grid max-w-7xl items-center gap-14 px-4 py-20 sm:px-6 lg:grid-cols-[1.05fr_0.95fr] lg:px-8 lg:py-28">
           <div>
             <p className="microlabel animate-fade-up text-guinda-700">
               Proyecto RSU 2026-A · Facultad de Economía · UNSA
