@@ -38,16 +38,16 @@ export default function HomePage() {
         {/* Fondo vectorial a medida: curvas de indiferencia + red de datos */}
         <HeroBackdrop />
 
-        {/* ── Baño de luz fluida (Wave fallback) ── 
-             Mantenemos el gráfico estructural SVG y superponemos la luz líquida
-             orientada hacia la derecha para bañar la tarjeta UV. */}
-        <div className="pointer-events-none absolute inset-0 -z-10" aria-hidden="true">
+        {/* ── Baño de luz fluida (Fondo Personalizado) ── 
+             Mantenemos el gráfico estructural SVG y superponemos la luz líquida.
+             Limitamos la imagen a la zona derecha (left-1/2 o w-[60%]) para no contaminar el texto. */}
+        <div className="pointer-events-none absolute inset-y-0 right-0 -z-10 w-full md:w-[60%] lg:w-[50%]" aria-hidden="true">
           <Image
             src="/brand/fondo_1.svg"
             alt=""
             fill
             priority
-            className="object-cover object-[80%_center] opacity-[0.85] mix-blend-multiply lg:object-right"
+            className="object-cover object-left opacity-[0.9] mix-blend-multiply"
           />
         </div>
 
