@@ -102,7 +102,7 @@ export function UvMonitor() {
         initial={{ opacity: 0, y: 24 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7, delay: 0.25, ease: [0.21, 0.47, 0.32, 0.98] }}
-        className="w-full max-w-md overflow-hidden rounded-2xl border border-white/60 bg-white/85 shadow-[6px_6px_36px_-4px_rgba(10,31,51,0.12)] ring-1 ring-black/[0.04] backdrop-blur-xl"
+        className="w-full max-w-md overflow-hidden rounded-[24px] border border-white/60 bg-white/75 shadow-[0_32px_64px_-12px_rgba(10,31,51,0.2),0_0_0_1px_rgba(255,255,255,0.4)_inset] ring-1 ring-black/[0.04] backdrop-blur-2xl"
       >
         <div className="p-7 sm:p-8">
           {/* ─── Header ─── */}

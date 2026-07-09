@@ -38,6 +38,19 @@ export default function HomePage() {
         {/* Fondo vectorial a medida: curvas de indiferencia + red de datos */}
         <HeroBackdrop />
 
+        {/* ── Baño de luz fluida (Wave fallback) ── 
+             Mantenemos el gráfico estructural SVG y superponemos la luz líquida
+             orientada hacia la derecha para bañar la tarjeta UV. */}
+        <div className="pointer-events-none absolute inset-0 -z-10" aria-hidden="true">
+          <Image
+            src="/brand/fondo_1.svg"
+            alt=""
+            fill
+            priority
+            className="object-cover object-[80%_center] opacity-[0.85] mix-blend-multiply lg:object-right"
+          />
+        </div>
+
         <div className="relative z-10 mx-auto grid max-w-7xl items-center gap-14 px-4 py-20 sm:px-6 lg:grid-cols-[1.05fr_0.95fr] lg:px-8 lg:py-28">
           <div>
             <p className="microlabel animate-fade-up text-guinda-700">
