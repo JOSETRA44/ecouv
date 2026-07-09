@@ -122,8 +122,32 @@ body {
   background-size: 100% 1px;
 }
 
+/* ===== Nav link: premium animated underline ===== */
+.nav-link {
+  position: relative;
+}
+.nav-link::after {
+  content: "";
+  position: absolute;
+  bottom: 2px;
+  left: 14px;
+  right: 14px;
+  height: 2px;
+  border-radius: 999px;
+  background: var(--color-guinda-600);
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.nav-link:hover::after {
+  transform: scaleX(1);
+}
+
 @media (prefers-reduced-motion: reduce) {
   .animate-fade-up {
     animation: none;
+  }
+  .nav-link::after {
+    transition: none;
   }
 }
