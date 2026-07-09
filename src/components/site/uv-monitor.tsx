@@ -7,38 +7,28 @@ import { uvLevel, type UvPayload } from "@/lib/uv";
 import { cn } from "@/lib/utils";
 
 const REFRESH_MS = 10 * 60 * 1000;
-
-/*
- * OMS UV scale: 0–3 Low · 3–6 Moderate · 6–8 High · 8–11 Very High · 11+ Extreme
- * Gauge range: 0 → MAX_UV (linear mapping to percentage)
- */
 const MAX_UV = 14;
 
 /*
- * The gradient color-stops are positioned at the OMS threshold boundaries
- * so the visual color always matches the classification at that point.
- * Percentages = threshold / MAX_UV * 100
- *
- *   0/14 =  0%  →  green  (low start)
- *   3/14 = 21%  →  green→yellow transition
- *   6/14 = 43%  →  yellow→orange transition
- *   8/14 = 57%  →  orange→red transition
- *  11/14 = 79%  →  red→purple transition
- *  14/14 = 100% →  purple (extreme end)
+ * OMS gradient: color-stops at exact threshold boundaries.
+ *   0/14 =  0.0%  green (low)
+ *   3/14 = 21.4%  yellow (moderate)
+ *   6/14 = 42.9%  orange (high)
+ *   8/14 = 57.1%  red (very high)
+ *  11/14 = 78.6%  purple (extreme)
  */
 const UV_GRADIENT =
-  "linear-gradient(to right, var(--color-uv-low) 0%, var(--color-uv-moderate) 21%, var(--color-uv-high) 43%, var(--color-uv-veryhigh) 57%, var(--color-uv-extreme) 79%, var(--color-uv-extreme) 100%)";
+  "linear-gradient(to right, #4bbe6e 0%, #c9b208 21.4%, #d97a06 42.9%, #d13a1f 57.1%, #9d5ba3 78.6%, #7a3d80 100%)";
 
-/** OMS scale tick marks — positioned at their mathematically exact percentage */
-const SCALE_TICKS: { value: number; label: string }[] = [
+const SCALE_TICKS = [
   { value: 0, label: "0" },
   { value: 3, label: "3" },
   { value: 6, label: "6" },
   { value: 8, label: "8" },
-  { value: 11, label: "11" },
+  { value: 11, label: "11+" },
 ];
 
-/* ─── Animated counter (ease-out cubic) ─── */
+/* ─── Animated counter ─── */
 function AnimatedValue({ value }: { value: number }) {
   const [display, setDisplay] = useState(0);
 
@@ -56,10 +46,10 @@ function AnimatedValue({ value }: { value: number }) {
   return <>{display.toFixed(1)}</>;
 }
 
-/* ════════════════════════════════════════════════════════════
-   UV Monitor — Apple Weather-inspired linear bar
-   Design-system aligned: bg-white · border-linea · shadow-z3
-   ════════════════════════════════════════════════════════════ */
+/* ════════════════════════════════════════════════════
+   UV Monitor — Clean card, native to the design system.
+   White surface · guinda accents · navy text · linea borders.
+   ════════════════════════════════════════════════════ */
 export function UvMonitor() {
   const [data, setData] = useState<UvPayload | null>(null);
   const [failed, setFailed] = useState(false);
@@ -82,11 +72,7 @@ export function UvMonitor() {
   }, []);
 
   const level = data ? uvLevel(data.uvIndex) : null;
-
-  /* H1: precise mathematical positioning on the 0→MAX_UV scale */
-  const indicatorPercent = data
-    ? Math.min(data.uvIndex / MAX_UV, 1) * 100
-    : 0;
+  const pct = data ? Math.min(data.uvIndex / MAX_UV, 1) * 100 : 0;
 
   return (
     <MotionConfig reducedMotion="user">
@@ -94,195 +80,180 @@ export function UvMonitor() {
         initial={{ opacity: 0, y: 24 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7, delay: 0.25, ease: [0.21, 0.47, 0.32, 0.98] }}
-        className="w-full max-w-md rounded-card border border-linea bg-white p-7 shadow-z3 sm:p-8"
+        className="w-full max-w-md overflow-hidden rounded-2xl bg-white shadow-[6px_6px_36px_-4px_rgba(10,31,51,0.12)]"
       >
-        {/* ─── Header ─── */}
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <Sun className="h-4 w-4 text-faint" strokeWidth={1.6} />
-            <h3 className="microlabel text-faint">Índice UV en vivo</h3>
+        <div className="p-7 sm:p-8">
+          {/* ─── Header ─── */}
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <Sun className="h-4 w-4 text-muted" strokeWidth={1.6} />
+              <h3 className="microlabel text-muted">Índice UV en vivo</h3>
+            </div>
+            <span className="relative flex h-2.5 w-2.5">
+              <span className={cn(
+                "absolute inline-flex h-full w-full animate-ping rounded-full opacity-60",
+                level ? level.bgClass : "bg-linea",
+              )} />
+              <span className={cn(
+                "relative inline-flex h-2.5 w-2.5 rounded-full",
+                level ? level.bgClass : "bg-linea",
+              )} />
+            </span>
           </div>
-          <span className="relative flex h-2.5 w-2.5">
-            <span className={cn(
-              "absolute inline-flex h-full w-full animate-ping rounded-full opacity-60",
-              level ? level.bgClass : "bg-linea",
-            )} />
-            <span className={cn(
-              "relative inline-flex h-2.5 w-2.5 rounded-full",
-              level ? level.bgClass : "bg-linea",
-            )} />
-          </span>
-        </div>
 
-        {/* ─── Main display ─── */}
-        <AnimatePresence mode="wait">
-          {data && level ? (
-            <motion.div
-              key="data"
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -8 }}
-              transition={{ duration: 0.4, ease: "easeOut" }}
-            >
-              {/*
-                H2: Number + badge stacked vertically.
-                The badge sits directly below the number, left-aligned,
-                eliminating the "floating" sensation of the side layout.
-              */}
-              <div className="mt-5">
-                <span className="display text-[72px] font-extrabold leading-none tracking-tighter text-navy">
-                  <AnimatedValue value={data.uvIndex} />
-                </span>
-                <div className="mt-2">
+          {/* ─── Main display ─── */}
+          <AnimatePresence mode="wait">
+            {data && level ? (
+              <motion.div
+                key="data"
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -8 }}
+                transition={{ duration: 0.4, ease: "easeOut" }}
+              >
+                {/* Number + solid badge inline */}
+                <div className="mt-4 flex items-baseline gap-3">
+                  <span className="display text-[68px] font-extrabold leading-none tracking-tighter text-navy">
+                    <AnimatedValue value={data.uvIndex} />
+                  </span>
+                  {/*
+                    Solid badge: bg color from the UV level for
+                    immediate scanability. White text for contrast.
+                  */}
                   <span className={cn(
-                    "inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-[11px] font-bold uppercase tracking-wide",
-                    level.chipClass,
+                    "inline-flex shrink-0 items-center rounded-full px-3 py-1 text-[11px] font-bold uppercase tracking-wide text-white",
+                    level.bgClass,
                   )}>
                     {level.label}
                   </span>
                 </div>
-              </div>
 
-              {/*
-                H1: Linear gradient bar with OMS-accurate color stops
-                and mathematically precise indicator positioning.
-                Ticks are placed at their exact percentage (value/MAX_UV).
-              */}
-              <div className="relative mt-6">
-                {/* Gradient track */}
-                <div
-                  className="h-[7px] w-full rounded-full"
-                  style={{ background: UV_GRADIENT }}
-                />
+                {/* Gradient bar with precise positioning */}
+                <div className="relative mt-4">
+                  <div
+                    className="h-2 w-full rounded-full shadow-[inset_0_0_0_1px_rgba(10,31,51,0.06)]"
+                    style={{ background: UV_GRADIENT }}
+                  />
 
-                {/* Indicator dot — positioned at exact percentage */}
-                <motion.div
-                  className="absolute top-1/2 -translate-y-1/2"
-                  initial={{ left: "0%" }}
-                  animate={{ left: `${indicatorPercent}%` }}
-                  transition={{
-                    duration: 1.2,
-                    delay: 0.3,
-                    ease: [0.25, 0.46, 0.45, 0.94],
-                  }}
-                >
-                  <div className="relative -ml-[7px]">
-                    <div className="h-[14px] w-[14px] rounded-full border-[2.5px] border-white bg-navy shadow-[0_0_0_1px_rgba(10,31,51,0.12),0_1px_3px_rgba(10,31,51,0.18)]" />
-                  </div>
-                </motion.div>
+                  {/* Indicator dot — centered on exact value */}
+                  <motion.div
+                    className="absolute top-1/2"
+                    initial={{ left: "0%" }}
+                    animate={{ left: `${pct}%` }}
+                    transition={{
+                      duration: 1.2,
+                      delay: 0.3,
+                      ease: [0.25, 0.46, 0.45, 0.94],
+                    }}
+                    style={{ marginLeft: -8, marginTop: -8 }}
+                  >
+                    <div className="h-4 w-4 rounded-full border-[2.5px] border-white bg-navy shadow-[0_0_0_1px_rgba(10,31,51,0.15),0_2px_4px_rgba(10,31,51,0.25)]" />
+                  </motion.div>
 
-                {/* H1: Scale labels at mathematically exact positions */}
-                <div className="relative mt-2 h-3">
-                  {SCALE_TICKS.map((tick) => {
-                    const pct = (tick.value / MAX_UV) * 100;
-                    return (
+                  {/* Scale ticks */}
+                  <div className="relative mt-2.5 h-3">
+                    {SCALE_TICKS.map((tick) => (
                       <span
                         key={tick.value}
-                        className="absolute text-[9px] font-medium text-faint -translate-x-1/2"
-                        style={{ left: `${pct}%` }}
+                        className="absolute -translate-x-1/2 text-[9px] font-medium text-faint"
+                        style={{ left: `${(tick.value / MAX_UV) * 100}%` }}
                       >
                         {tick.label}
                       </span>
-                    );
-                  })}
+                    ))}
+                  </div>
                 </div>
-              </div>
 
-              {/*
-                H3 + H5: Advice block with increased contrast and
-                clear spatial separation from the gauge above.
-                The advice is the *action* — it must dominate the
-                secondary info rows below.
-              */}
-              <p className="mt-5 text-[14px] font-medium leading-relaxed text-ink">
-                {level.advice}
-              </p>
-            </motion.div>
-          ) : failed ? (
-            <motion.div
-              key="error"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="py-10"
-            >
-              <p className="text-center text-sm text-muted">
-                Sin conexión con el servicio UV.
-              </p>
-              <p className="mt-1 text-center text-xs text-faint">
-                Reintentando…
-              </p>
-            </motion.div>
-          ) : (
-            <motion.div
-              key="skeleton"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="mt-5 space-y-4"
-            >
-              <div className="space-y-2">
-                <div className="h-16 w-24 animate-pulse rounded-lg bg-neutro" />
-                <div className="h-5 w-16 animate-pulse rounded-full bg-neutro" />
-              </div>
-              <div className="h-[7px] w-full animate-pulse rounded-full bg-neutro" />
-              <div className="h-4 w-52 animate-pulse rounded bg-neutro" />
-            </motion.div>
-          )}
-        </AnimatePresence>
+                {/* Advice — clear action hierarchy */}
+                <p className="mt-4 text-[14px] font-medium leading-relaxed text-ink">
+                  {level.advice}
+                </p>
+              </motion.div>
+            ) : failed ? (
+              <motion.div
+                key="error"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="py-10"
+              >
+                <p className="text-center text-sm text-muted">
+                  Sin conexión con el servicio UV.
+                </p>
+                <p className="mt-1 text-center text-xs text-faint">
+                  Reintentando…
+                </p>
+              </motion.div>
+            ) : (
+              <motion.div
+                key="skeleton"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="mt-4 space-y-4"
+              >
+                <div className="flex items-baseline gap-3">
+                  <div className="h-16 w-24 animate-pulse rounded-lg bg-neutro" />
+                  <div className="h-6 w-14 animate-pulse rounded-full bg-neutro" />
+                </div>
+                <div className="h-2 w-full animate-pulse rounded-full bg-neutro" />
+                <div className="h-4 w-52 animate-pulse rounded bg-neutro" />
+              </motion.div>
+            )}
+          </AnimatePresence>
 
-        {/*
-          H4 + H6: Data rows
-          — "Franja crítica" uses font-semibold text-navy (not red/orange)
-            to avoid competing with the UV bar.
-          — All icons normalized to strokeWidth={1.6} for visual consistency.
-          — ArrowUp replaces TrendingUp for optical weight matching.
-        */}
-        <dl className="mt-6 space-y-0 border-t border-linea pt-4">
-          {[
-            {
-              icon: MapPin,
-              label: "Ubicación",
-              value: "Campus UNSA · Arequipa",
-              valueClass: "text-navy",
-            },
-            {
-              icon: Clock3,
-              label: "Franja crítica",
-              value: "10:00 — 15:00",
-              valueClass: "font-semibold text-navy",
-            },
-            ...(data?.todayMax != null
-              ? [{
-                  icon: ArrowUp,
-                  label: "Máx. previsto hoy",
-                  value: data.todayMax.toFixed(1),
-                  valueClass: "text-navy",
-                }]
-              : []),
-          ].map((row, i) => (
-            <motion.div
-              key={row.label}
-              initial={{ opacity: 0, x: -8 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.8 + i * 0.1, duration: 0.4, ease: "easeOut" }}
-              className="flex items-center justify-between py-2.5"
-            >
-              <dt className="flex items-center gap-2 text-[13px] text-muted">
-                <row.icon className="h-3.5 w-3.5" strokeWidth={1.6} />
-                {row.label}
-              </dt>
-              <dd className={cn("text-[13px] font-medium", row.valueClass)}>
-                {row.value}
-              </dd>
-            </motion.div>
-          ))}
-        </dl>
+          {/* ─── Data rows ─── */}
+          <dl className="mt-6 space-y-0 rounded-xl bg-neutro/70 px-4 py-2">
+            {[
+              {
+                icon: MapPin,
+                label: "Ubicación",
+                value: "Campus UNSA · Arequipa",
+                bold: false,
+              },
+              {
+                icon: Clock3,
+                label: "Franja crítica",
+                value: "10:00 — 15:00",
+                bold: true,
+              },
+              ...(data?.todayMax != null
+                ? [{
+                    icon: ArrowUp,
+                    label: "Máx. previsto hoy",
+                    value: data.todayMax.toFixed(1),
+                    bold: false,
+                  }]
+                : []),
+            ].map((row, i) => (
+              <motion.div
+                key={row.label}
+                initial={{ opacity: 0, x: -8 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.8 + i * 0.1, duration: 0.4, ease: "easeOut" }}
+                className="flex items-center justify-between py-2.5"
+              >
+                <dt className="flex items-center gap-2 text-[13px] text-muted">
+                  <row.icon className="h-3.5 w-3.5" strokeWidth={1.6} />
+                  {row.label}
+                </dt>
+                <dd className={cn(
+                  "text-[13px] font-medium text-navy",
+                  row.bold && "font-semibold",
+                )}>
+                  {row.value}
+                </dd>
+              </motion.div>
+            ))}
+          </dl>
+        </div>
 
         {/* Footer */}
-        <p className="mt-4 border-t border-linea pt-3 text-center text-[10.5px] leading-relaxed text-faint">
-          Fuente: Open-Meteo
-          {data?.source === "cache" && " (última lectura)"} ·
-          Dataset del análisis de externalidades del curso.
-        </p>
+        <div className="px-7 pb-6 pt-2 sm:px-8">
+          <p className="text-center text-[10px] leading-relaxed text-faint">
+            Fuente: Open-Meteo
+            {data?.source === "cache" && " (última lectura)"} ·
+            Dataset del análisis de externalidades del curso.
+          </p>
+        </div>
       </motion.div>
     </MotionConfig>
   );
