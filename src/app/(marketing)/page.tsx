@@ -1,9 +1,6 @@
 import Image from "next/image";
 import {
   ArrowRight,
-  Scale,
-  TrendingDown,
-  HeartPulse,
   Recycle,
 } from "lucide-react";
 import { ButtonLink } from "@/components/ui/button";
@@ -182,30 +179,29 @@ export default function HomePage() {
           <div className="mt-14 grid gap-6 md:grid-cols-3">
             {[
               {
-                icon: Scale,
+                src: "/brand/radiacion/ExternalidadesNegativas.svg",
                 title: "Externalidades negativas",
-                body: "La exposición prolongada a la radiación UV genera costos de salud que nadie paga en el mercado: afecciones cutáneas y oculares evitables. El curso las identifica y analiza desde una perspectiva real y local.",
               },
               {
-                icon: TrendingDown,
+                src: "/brand/radiacion/CostoBeneficio.svg",
                 title: "Costo-beneficio de prevenir",
-                body: "Invertir en prevención (señalización, fotoprotección, educación) cuesta una fracción de lo que cuesta tratar enfermedades prevenibles. El proyecto documenta esa brecha con datos del campus.",
               },
               {
-                icon: HeartPulse,
+                src: "/brand/radiacion/CapitalHumano.svg",
                 title: "Capital humano",
-                body: "La salud ambiental preserva el activo más importante de la universidad: sus personas. Bienes públicos y sostenibilidad aplicados al bienestar de la comunidad agustina.",
               },
             ].map((card, i) => (
               <Reveal key={card.title} delay={0.05 + i * 0.07}>
-                <article className="h-full rounded-card border border-linea bg-white p-8 transition-shadow duration-300 hover:shadow-z2">
-                  <card.icon className="h-6 w-6 text-granate-600" strokeWidth={1.6} />
-                  <h3 className="mt-6 text-lg font-medium text-navy">
-                    {card.title}
-                  </h3>
-                  <p className="mt-3 text-[15px] font-light leading-relaxed text-muted">
-                    {card.body}
-                  </p>
+                <article className="group relative overflow-hidden rounded-[24px] border border-linea bg-neutro shadow-z1 transition-all duration-500 ease-out hover:-translate-y-1.5 hover:shadow-z3">
+                  <Image
+                    src={card.src}
+                    alt={card.title}
+                    width={800}
+                    height={800}
+                    className="h-auto w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
+                  />
+                  {/* Subtle glare effect on hover */}
+                  <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100 bg-gradient-to-tr from-transparent via-white/10 to-white/40" />
                 </article>
               </Reveal>
             ))}
