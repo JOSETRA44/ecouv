@@ -30,7 +30,10 @@ const REPORTS = [
   { href: "/api/reports/foro", label: "Inscripciones al foro" },
 ] as const;
 
-export const metadata: Metadata = { title: "Panel de coordinación" };
+export const metadata: Metadata = {
+  title: "Panel de coordinación",
+  robots: { index: false, follow: false },
+};
 
 function fmt(date: string | null) {
   if (!date) return "Sin fecha";

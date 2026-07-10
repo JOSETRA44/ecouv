@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, IBM_Plex_Mono } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
 
 const inter = Inter({
@@ -46,13 +48,29 @@ export const metadata: Metadata = {
     description:
       "Prevención frente a la radiación solar en Arequipa: monitor UV en vivo, brigada estudiantil y Foro Ambiental y de Salud 2026.",
   },
+  twitter: {
+    card: "summary_large_image",
+    title: "Brigada Ambiental FEC · RSU UNSA 2026-A",
+    description:
+      "Prevención frente a la radiación solar en Arequipa: monitor UV en vivo, brigada estudiantil y Foro Ambiental y de Salud 2026.",
+  },
   robots: {
     index: true,
     follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+    },
   },
   alternates: {
     canonical: "/",
   },
+  verification: {
+    // Google Search Console — confirma la propiedad del sitio para indexación y métricas.
+    google: "54pQ5jP-F_ImfhYpsEoXOVilu9R9brGmOdE-IH9shdY",
+  },
+  category: "education",
 };
 
 export default function RootLayout({
@@ -62,6 +80,8 @@ export default function RootLayout({
     <html lang="es">
       <body className={`${inter.variable} ${plexMono.variable} antialiased`}>
         {children}
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );

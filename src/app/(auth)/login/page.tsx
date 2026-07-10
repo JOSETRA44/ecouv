@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
 import { LoginForm } from "@/features/brigada/auth-forms";
 
-export const metadata: Metadata = { title: "Ingresar" };
+export const metadata: Metadata = {
+  title: "Ingresar",
+  robots: { index: false, follow: false },
+};
 
 export default async function LoginPage({
   searchParams,

@@ -21,7 +21,10 @@ import { EvidenceUploadForm } from "@/features/brigada/evidence-upload-form";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 
-export const metadata: Metadata = { title: "Portal de brigadistas" };
+export const metadata: Metadata = {
+  title: "Portal de brigadistas",
+  robots: { index: false, follow: false },
+};
 
 const statusCopy = {
   pending: {

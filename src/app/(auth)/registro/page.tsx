@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
 import { SignUpForm } from "@/features/brigada/auth-forms";
 
-export const metadata: Metadata = { title: "Registro de brigadistas" };
+export const metadata: Metadata = {
+  title: "Registro de brigadistas",
+  robots: { index: false, follow: false },
+};
 
 export default function RegistroPage() {
   return (
