@@ -336,7 +336,7 @@ export default function HomePage() {
       </section>
 
       {/* ============ COORDINACIÓN ============ */}
-      <section id="coordinacion" className="bg-white py-20 lg:py-28">
+      <section id="coordinacion" className="bg-white pt-20 pb-8 lg:pt-28 lg:pb-12">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid items-center gap-12 lg:grid-cols-[0.65fr_1.35fr]">
             <Reveal>
@@ -382,8 +382,16 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* ============ ZÓCALO VISUAL (PISO FÍSICO) ============ */}
+      {/* Al ajustar la altura a la proporción orgánica de la textura (clipping de transparencia superior)
+          y usar bg-auto bg-bottom, logramos que la sección anterior aterrice de forma premium sin espacios muertos. */}
+      <div 
+        className="w-full h-12 sm:h-16 md:h-20 bg-[url('/brand/piso_1.png')] bg-auto bg-repeat-x bg-bottom" 
+        aria-hidden="true" 
+      />
+
       {/* ============ CTA FORO ============ */}
-      <section className="border-t border-linea bg-granate-700">
+      <section className="bg-granate-700">
         <div className="mx-auto flex max-w-7xl flex-col items-center gap-8 px-4 py-20 text-center sm:px-6 lg:px-8">
           <Reveal>
             <p className="microlabel text-white/60">Evento central · Julio 2026</p>
