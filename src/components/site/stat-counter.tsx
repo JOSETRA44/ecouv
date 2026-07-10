@@ -35,7 +35,7 @@ export function StatCounter({ value, prefix = "", suffix = "", label, detail }: 
   return (
     <div ref={ref} className="relative border-t border-linea pt-6">
       <span
-        className="absolute -top-px left-0 h-[2px] w-8 bg-guinda-600"
+        className="absolute -top-px left-0 h-[2px] w-8 bg-granate-600"
         aria-hidden
       />
       <div className="tnum text-5xl font-extralight tracking-tight text-navy">
@@ -43,7 +43,7 @@ export function StatCounter({ value, prefix = "", suffix = "", label, detail }: 
         {display.toLocaleString("es-PE")}
         {suffix}
       </div>
-      <div className="microlabel mt-3 text-guinda-700">{label}</div>
+      <div className="microlabel mt-3 text-granate-700">{label}</div>
       <p className="mt-2 max-w-[28ch] text-sm leading-relaxed text-muted">{detail}</p>
     </div>
   );

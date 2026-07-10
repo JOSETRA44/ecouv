@@ -73,7 +73,7 @@ export function LoginForm({ next }: { next?: string }) {
 
       <p className="text-center text-sm text-muted">
         ¿Aún no tienes cuenta?{" "}
-        <Link href="/registro" className="font-medium text-guinda-600 hover:underline">
+        <Link href="/registro" className="font-medium text-granate-600 hover:underline">
           Regístrate como brigadista
         </Link>
       </p>
@@ -153,7 +153,7 @@ export function SignUpForm() {
 
       <p className="text-center text-sm text-muted">
         ¿Ya tienes cuenta?{" "}
-        <Link href="/login" className="font-medium text-guinda-600 hover:underline">
+        <Link href="/login" className="font-medium text-granate-600 hover:underline">
           Inicia sesión
         </Link>
       </p>

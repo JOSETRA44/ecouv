@@ -26,7 +26,16 @@ const jsonLd = {
 
 export default function HomePage() {
   return (
-    <>
+    <main className="relative">
+      {/* ============ GRID ARQUITECTÓNICO (BLUEPRINT GLOBAL) ============ */}
+      <div 
+        className="pointer-events-none absolute inset-0 z-0 mx-auto flex w-full max-w-[1920px] justify-between px-4 sm:px-6 lg:px-16 2xl:px-24 [mask-image:linear-gradient(to_bottom,transparent,black_5%,black_95%,transparent)]" 
+        aria-hidden="true" 
+      >
+        <div className="h-full w-px bg-linea/70" />
+        <div className="h-full w-px bg-linea/70" />
+      </div>
+
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -39,21 +48,21 @@ export default function HomePage() {
         <HeroBackdrop />
 
         {/* ── Baño de luz fluida (Fondo Personalizado) ── 
-             Mantenemos el gráfico estructural SVG y superponemos la luz líquida.
-             Limitamos la imagen a la zona derecha (left-1/2 o w-[60%]) para no contaminar el texto. */}
-        <div className="pointer-events-none absolute inset-y-0 right-0 -z-10 w-full md:w-[60%] lg:w-[50%]" aria-hidden="true">
+             1. DOM Order / Z-index: Al no tener -z-10 y estar después de HeroBackdrop, se pinta SOBRE los nodos.
+             2. Responsive Flow: En móvil se ancla abajo (h-[60%]) y se rota para enmarcar la tarjeta; en desktop a la derecha. */}
+        <div className="pointer-events-none absolute bottom-0 right-0 h-[55%] w-full md:inset-y-0 md:h-full md:w-[60%] lg:w-[50%]" aria-hidden="true">
           <Image
             src="/brand/fondo_1.svg"
             alt=""
             fill
             priority
-            className="object-cover object-left opacity-[0.9] mix-blend-multiply"
+            className="object-cover object-center opacity-[0.9] mix-blend-multiply rotate-90 scale-125 md:rotate-0 md:scale-100 md:object-left"
           />
         </div>
 
         <div className="relative z-10 mx-auto grid max-w-7xl items-center gap-14 px-4 py-20 sm:px-6 lg:grid-cols-[1.05fr_0.95fr] lg:px-8 lg:py-28">
           <div>
-            <p className="microlabel animate-fade-up text-guinda-700">
+            <p className="microlabel animate-fade-up text-granate-700">
               Proyecto RSU 2026-A · Facultad de Economía · UNSA
             </p>
             <h1
@@ -61,7 +70,7 @@ export default function HomePage() {
               style={{ animationDelay: "80ms" }}
             >
               La prevención también es una{" "}
-              <span className="font-normal text-guinda-600">
+              <span className="font-normal text-granate-600">
                 decisión económica
               </span>
               .
@@ -115,7 +124,7 @@ export default function HomePage() {
       <section className="bg-neutro py-20 lg:py-28">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <Reveal>
-            <p className="microlabel text-guinda-700">Metas del semestre</p>
+            <p className="microlabel text-granate-700">Metas del semestre</p>
             <h2 className="display mt-4 max-w-2xl text-4xl text-navy sm:text-5xl">
               Un proyecto que se mide en personas.
             </h2>
@@ -158,7 +167,7 @@ export default function HomePage() {
       <section id="proyecto" className="border-y border-linea bg-white py-20 lg:py-28">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <Reveal>
-            <p className="microlabel text-guinda-700">¿Por qué desde Economía?</p>
+            <p className="microlabel text-granate-700">¿Por qué desde Economía?</p>
             <h2 className="display mt-4 max-w-3xl text-4xl text-navy sm:text-5xl">
               La radiación solar es una externalidad. Gestionarla es economía
               aplicada.
@@ -190,7 +199,7 @@ export default function HomePage() {
             ].map((card, i) => (
               <Reveal key={card.title} delay={0.05 + i * 0.07}>
                 <article className="h-full rounded-card border border-linea bg-white p-8 transition-shadow duration-300 hover:shadow-z2">
-                  <card.icon className="h-6 w-6 text-guinda-600" strokeWidth={1.6} />
+                  <card.icon className="h-6 w-6 text-granate-600" strokeWidth={1.6} />
                   <h3 className="mt-6 text-lg font-medium text-navy">
                     {card.title}
                   </h3>
@@ -204,7 +213,7 @@ export default function HomePage() {
 
           <Reveal delay={0.1}>
             <div className="mt-6 flex items-start gap-4 rounded-card border border-linea bg-neutro p-6">
-              <Recycle className="mt-0.5 h-5 w-5 shrink-0 text-guinda-600" strokeWidth={1.6} />
+              <Recycle className="mt-0.5 h-5 w-5 shrink-0 text-granate-600" strokeWidth={1.6} />
               <p className="text-[15px] font-light leading-relaxed text-ink">
                 <span className="font-medium text-navy">Economía circular:</span>{" "}
                 la brigada diseña artículos de protección solar fabricados con
@@ -223,7 +232,7 @@ export default function HomePage() {
           <div className="grid gap-12 lg:grid-cols-[0.9fr_1.1fr]">
             <Reveal>
               <div className="lg:sticky lg:top-24">
-                <p className="microlabel text-guinda-700">Marco normativo</p>
+                <p className="microlabel text-granate-700">Marco normativo</p>
                 <h2 className="display mt-4 text-4xl text-navy sm:text-5xl">
                   No es solo voluntad: es ley.
                 </h2>
@@ -274,7 +283,7 @@ export default function HomePage() {
       <section id="actividades" className="border-y border-linea bg-white py-20 lg:py-28">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <Reveal>
-            <p className="microlabel text-guinda-700">
+            <p className="microlabel text-granate-700">
               Hoja de ruta · mayo — julio 2026
             </p>
             <h2 className="display mt-4 max-w-2xl text-4xl text-navy sm:text-5xl">
@@ -313,7 +322,7 @@ export default function HomePage() {
               <Reveal key={step.title} delay={i * 0.06}>
                 <li className="relative border-t border-linea pt-5">
                   <span
-                    className="absolute -top-px left-0 h-[2px] w-8 bg-guinda-600"
+                    className="absolute -top-px left-0 h-[2px] w-8 bg-granate-600"
                     aria-hidden
                   />
                   <span className="microlabel text-faint">{step.mes} 2026</span>
@@ -349,7 +358,7 @@ export default function HomePage() {
               </figure>
             </Reveal>
             <Reveal delay={0.1}>
-              <p className="microlabel text-guinda-700">Coordinación del proyecto</p>
+              <p className="microlabel text-granate-700">Coordinación del proyecto</p>
               <h2 className="display mt-4 text-4xl text-navy sm:text-5xl">
                 José Zuzunaga Melgar
               </h2>
@@ -378,7 +387,7 @@ export default function HomePage() {
       </section>
 
       {/* ============ CTA FORO ============ */}
-      <section className="border-t border-linea bg-guinda-700">
+      <section className="border-t border-linea bg-granate-700">
         <div className="mx-auto flex max-w-7xl flex-col items-center gap-8 px-4 py-20 text-center sm:px-6 lg:px-8">
           <Reveal>
             <p className="microlabel text-white/60">Evento central · Julio 2026</p>
@@ -402,6 +411,6 @@ export default function HomePage() {
           </Reveal>
         </div>
       </section>
-    </>
+    </main>
   );
 }

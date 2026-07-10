@@ -8,7 +8,7 @@ export function Input({
   return (
     <input
       className={cn(
-        "h-11 w-full rounded-btn border border-linea bg-white px-4 text-[15px] text-navy placeholder:text-muted/70 transition-all focus:border-guinda-600 focus:outline-none focus:ring-[3px] focus:ring-guinda-600/10",
+        "h-11 w-full rounded-btn border border-linea bg-white px-4 text-[15px] text-navy placeholder:text-muted/70 transition-all focus:border-granate-600 focus:outline-none focus:ring-[3px] focus:ring-granate-600/10",
         className,
       )}
       {...props}
@@ -23,7 +23,7 @@ export function Select({
   return (
     <select
       className={cn(
-        "h-11 w-full rounded-btn border border-linea bg-white px-3 text-[15px] text-navy transition-all focus:border-guinda-600 focus:outline-none focus:ring-[3px] focus:ring-guinda-600/10",
+        "h-11 w-full rounded-btn border border-linea bg-white px-3 text-[15px] text-navy transition-all focus:border-granate-600 focus:outline-none focus:ring-[3px] focus:ring-granate-600/10",
         className,
       )}
       {...props}

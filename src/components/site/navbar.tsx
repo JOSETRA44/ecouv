@@ -102,7 +102,7 @@ export function Navbar() {
           {/* Text brand */}
           <span className="hidden leading-none sm:block">
             <span
-              className={`block font-semibold tracking-tight text-navy transition-all duration-500 group-hover:text-guinda-700 ${
+              className={`block font-semibold tracking-tight text-navy transition-all duration-500 group-hover:text-granate-700 ${
                 scrolled ? "text-[13px]" : "text-[14px]"
               }`}
             >
@@ -129,7 +129,7 @@ export function Navbar() {
               {l.label}
               {/* Animated underline */}
               <span
-                className="absolute bottom-0.5 left-3.5 right-3.5 h-[2px] origin-left scale-x-0 rounded-full bg-guinda-600 transition-transform duration-300 ease-out group-hover:scale-x-100"
+                className="absolute bottom-0.5 left-3.5 right-3.5 h-[2px] origin-left scale-x-0 rounded-full bg-granate-600 transition-transform duration-300 ease-out group-hover:scale-x-100"
                 aria-hidden
                 style={{}}
               />
@@ -139,7 +139,7 @@ export function Navbar() {
           {/* CTA */}
           <Link
             href="/login"
-            className={`group/cta relative ml-3 inline-flex items-center gap-2 overflow-hidden rounded-full border border-guinda-600/20 bg-guinda-600 px-5 text-[13px] font-semibold text-white shadow-[0_1px_6px_rgb(139_0_74/0.2)] transition-all duration-300 hover:border-guinda-500/40 hover:bg-guinda-500 hover:shadow-[0_2px_16px_rgb(139_0_74/0.3)] active:scale-[0.97] ${
+            className={`group/cta relative ml-3 inline-flex items-center gap-2 overflow-hidden rounded-full border border-granate-600/20 bg-granate-600 px-5 text-[13px] font-semibold text-white shadow-[0_1px_6px_rgb(139_0_74/0.2)] transition-all duration-300 hover:border-granate-500/40 hover:bg-granate-500 hover:shadow-[0_2px_16px_rgb(139_0_74/0.3)] active:scale-[0.97] ${
               scrolled ? "h-8" : "h-9"
             }`}
           >
@@ -213,10 +213,10 @@ export function Navbar() {
                   <Link
                     href={l.href}
                     onClick={() => setOpen(false)}
-                    className="group/ml flex items-center justify-between border-b border-neutro py-3.5 text-[15px] font-medium text-navy transition-colors hover:text-guinda-600"
+                    className="group/ml flex items-center justify-between border-b border-neutro py-3.5 text-[15px] font-medium text-navy transition-colors hover:text-granate-600"
                   >
                     <span>{l.label}</span>
-                    <ArrowRight className="h-4 w-4 text-faint transition-all duration-200 group-hover/ml:translate-x-1 group-hover/ml:text-guinda-600" />
+                    <ArrowRight className="h-4 w-4 text-faint transition-all duration-200 group-hover/ml:translate-x-1 group-hover/ml:text-granate-600" />
                   </Link>
                 </motion.div>
               ))}
@@ -229,7 +229,7 @@ export function Navbar() {
                 <Link
                   href="/login"
                   onClick={() => setOpen(false)}
-                  className="mt-5 flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-guinda-600 text-[15px] font-semibold text-white shadow-z1 transition-all duration-200 active:scale-[0.98]"
+                  className="mt-5 flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-granate-600 text-[15px] font-semibold text-white shadow-z1 transition-all duration-200 active:scale-[0.98]"
                 >
                   Portal de brigadistas
                   <ArrowRight className="h-4 w-4" />

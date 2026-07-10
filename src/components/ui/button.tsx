@@ -5,15 +5,15 @@ import Link from "next/link";
 type Variant = "primary" | "secondary" | "ghost";
 
 const base =
-  "inline-flex items-center justify-center gap-2 rounded-btn px-6 h-12 text-[15px] font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-guinda-600/20 focus-visible:border-guinda-600 disabled:cursor-not-allowed disabled:opacity-50";
+  "inline-flex items-center justify-center gap-2 rounded-btn px-6 h-12 text-[15px] font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-granate-600/20 focus-visible:border-granate-600 disabled:cursor-not-allowed disabled:opacity-50";
 
 const variants: Record<Variant, string> = {
   primary:
-    "bg-guinda-600 text-white shadow-z1 hover:bg-guinda-500 active:bg-guinda-700 active:scale-[0.98]",
+    "bg-granate-600 text-white shadow-z1 hover:bg-granate-500 active:bg-granate-700 active:scale-[0.98]",
   secondary:
-    "bg-white text-guinda-600 border border-guinda-600/60 hover:bg-guinda-50 active:bg-guinda-100",
+    "bg-white text-granate-600 border border-granate-600/60 hover:bg-granate-50 active:bg-granate-100",
   ghost:
-    "bg-transparent text-guinda-600 hover:bg-guinda-600/8 active:bg-guinda-600/12",
+    "bg-transparent text-granate-600 hover:bg-granate-600/8 active:bg-granate-600/12",
 };
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {

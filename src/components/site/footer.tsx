@@ -33,10 +33,10 @@ export function Footer() {
           <div>
             <h3 className="microlabel text-faint">Plataforma</h3>
             <ul className="mt-4 space-y-2.5 text-sm">
-              <li><Link href="/#proyecto" className="text-ink transition-colors hover:text-guinda-600">El proyecto</Link></li>
-              <li><Link href="/#normativa" className="text-ink transition-colors hover:text-guinda-600">Marco normativo</Link></li>
-              <li><Link href="/foro" className="text-ink transition-colors hover:text-guinda-600">Foro Ambiental y de Salud</Link></li>
-              <li><Link href="/login" className="text-ink transition-colors hover:text-guinda-600">Portal de brigadistas</Link></li>
+              <li><Link href="/#proyecto" className="text-ink transition-colors hover:text-granate-600">El proyecto</Link></li>
+              <li><Link href="/#normativa" className="text-ink transition-colors hover:text-granate-600">Marco normativo</Link></li>
+              <li><Link href="/foro" className="text-ink transition-colors hover:text-granate-600">Foro Ambiental y de Salud</Link></li>
+              <li><Link href="/login" className="text-ink transition-colors hover:text-granate-600">Portal de brigadistas</Link></li>
             </ul>
           </div>
 

@@ -7,19 +7,19 @@
 }
 
 @theme {
-  /* ===== Guinda institucional UNSA — solo acciones y acentos ===== */
-  --color-guinda-50: #fbeff5;
-  --color-guinda-100: #f7dfeb;
-  --color-guinda-200: #efb9d5;
-  --color-guinda-300: #e38ab8;
-  --color-guinda-400: #c94e90;
-  --color-guinda-500: #a81c67;
-  --color-guinda-600: #8b004a;
-  --color-guinda-700: #74003e;
-  --color-guinda-800: #5c0132;
-  --color-guinda-900: #430124;
-  --color-guinda-950: #2b0117;
-  --color-guinda: #8b004a;
+  /* ===== Granate institucional UNSA (#5E151D) — solo acciones y acentos ===== */
+  --color-granate-50: #f6ebeb;
+  --color-granate-100: #ead0d1;
+  --color-granate-200: #d8a5a9;
+  --color-granate-300: #c2747a;
+  --color-granate-400: #ab4850;
+  --color-granate-500: #90272f;
+  --color-granate-600: #5e151d;
+  --color-granate-700: #4b1017;
+  --color-granate-800: #380c11;
+  --color-granate-900: #25080c;
+  --color-granate-950: #170407;
+  --color-granate: #5e151d;
 
   /* ===== Neutros limpios (Stripe × Material 3) ===== */
   --color-navy: #0a1f33;
@@ -63,7 +63,7 @@ body {
 }
 
 ::selection {
-  background: var(--color-guinda-600);
+  background: var(--color-granate-600);
   color: #fff;
 }
 
@@ -134,7 +134,7 @@ body {
   right: 14px;
   height: 2px;
   border-radius: 999px;
-  background: var(--color-guinda-600);
+  background: var(--color-granate-600);
   transform: scaleX(0);
   transform-origin: center;
   transition: transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);

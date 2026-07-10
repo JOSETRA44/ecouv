@@ -76,7 +76,7 @@ export default async function BrigadaPage() {
           <form action={signOutBrigadista}>
             <button
               type="submit"
-              className="inline-flex items-center gap-2 rounded-btn px-3 py-2 text-sm text-ink transition-colors hover:bg-guinda-50 hover:text-guinda-700"
+              className="inline-flex items-center gap-2 rounded-btn px-3 py-2 text-sm text-ink transition-colors hover:bg-granate-50 hover:text-granate-700"
             >
               <LogOut className="h-4 w-4" /> Cerrar sesión
             </button>
@@ -87,7 +87,7 @@ export default async function BrigadaPage() {
       <main className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
-            <p className="microlabel text-guinda-700">
+            <p className="microlabel text-granate-700">
               {profile?.section
                 ? `Sección ${profile.section} · Economía Política 2`
                 : "Brigada Ambiental FEC"}
@@ -105,7 +105,7 @@ export default async function BrigadaPage() {
 
         <div className="mt-10 grid gap-6 md:grid-cols-3">
           <Card>
-            <span className="flex h-11 w-11 items-center justify-center rounded-card bg-guinda-50 text-guinda-600">
+            <span className="flex h-11 w-11 items-center justify-center rounded-card bg-granate-50 text-granate-600">
               <CalendarClock className="h-5 w-5" />
             </span>
             <h2 className="mt-5 text-lg font-semibold text-navy">Mis turnos</h2>
@@ -117,7 +117,7 @@ export default async function BrigadaPage() {
           </Card>
 
           <Card>
-            <span className="flex h-11 w-11 items-center justify-center rounded-card bg-guinda-50 text-guinda-600">
+            <span className="flex h-11 w-11 items-center justify-center rounded-card bg-granate-50 text-granate-600">
               <ClipboardCheck className="h-5 w-5" />
             </span>
             <h2 className="mt-5 text-lg font-semibold text-navy">Asistencia</h2>
@@ -129,7 +129,7 @@ export default async function BrigadaPage() {
           </Card>
 
           <Card>
-            <span className="flex h-11 w-11 items-center justify-center rounded-card bg-guinda-50 text-guinda-600">
+            <span className="flex h-11 w-11 items-center justify-center rounded-card bg-granate-50 text-granate-600">
               <Camera className="h-5 w-5" />
             </span>
             <h2 className="mt-5 text-lg font-semibold text-navy">Evidencias</h2>

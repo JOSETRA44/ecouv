@@ -85,7 +85,7 @@ export default async function ForoPage() {
         <div className="pattern-graph" aria-hidden />
         <div className="relative mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
           <div className="animate-fade-up">
-            <p className="microlabel text-guinda-700">
+            <p className="microlabel text-granate-700">
               Evento central del proyecto RSU 2026-A
             </p>
             <h1 className="display mt-6 max-w-3xl text-4xl text-navy sm:text-5xl lg:text-6xl">

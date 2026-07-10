@@ -67,7 +67,7 @@ export function AforoBar({ eventId, initialRegistered, capacity }: AforoBarProps
         aria-label="Ocupación del aforo"
       >
         <motion.div
-          className={full ? "h-full bg-uv-veryhigh" : "h-full bg-guinda-600"}
+          className={full ? "h-full bg-uv-veryhigh" : "h-full bg-granate-600"}
           initial={{ width: 0 }}
           animate={{ width: `${pct}%` }}
           transition={{ type: "spring", stiffness: 60, damping: 18 }}

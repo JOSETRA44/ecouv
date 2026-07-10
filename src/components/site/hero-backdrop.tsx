@@ -20,7 +20,7 @@ const EDGES: ReadonlyArray<readonly [number, number]> = [
   [2, 7], [4, 8], [8, 9], [2, 4], [6, 9],
 ];
 
-/** Nodos guinda (acentos institucionales, con pulso) */
+/** Nodos granate (acentos institucionales, con pulso) */
 const ACCENT = new Set([1, 4, 9]);
 
 export function HeroBackdrop() {
@@ -68,13 +68,14 @@ export function HeroBackdrop() {
         <path
           className="iso-drift-slow"
           d="M 920 470 L 1430 200"
-          stroke="#8b004a"
+          stroke="#5e151d"
           strokeWidth="1"
           strokeDasharray="3 7"
           opacity="0.16"
         />
 
-        {/* ── Red de datos: aristas ── */}
+        {/* ── Red de datos: aristas (Comentado a petición de diseño para mayor limpieza visual) ── */}
+        {/*
         <g stroke="#0a1f33" strokeWidth="0.8" opacity="0.09">
           {EDGES.map(([a, b]) => (
             <line
@@ -86,8 +87,10 @@ export function HeroBackdrop() {
             />
           ))}
         </g>
+        */}
 
-        {/* ── Red de datos: nodos ── */}
+        {/* ── Red de datos: nodos (Comentado a petición de diseño) ── */}
+        {/*
         <g>
           {NODES.map(([x, y], i) =>
             ACCENT.has(i) ? (
@@ -97,19 +100,21 @@ export function HeroBackdrop() {
                   cx={x}
                   cy={y}
                   r="7"
-                  fill="#8b004a"
+                  fill="#5e151d"
                   opacity="0.1"
                   style={{ animationDelay: `${i * 1.4}s` }}
                 />
-                <circle cx={x} cy={y} r="2.5" fill="#8b004a" opacity="0.3" />
+                <circle cx={x} cy={y} r="2.5" fill="#5e151d" opacity="0.3" />
               </g>
             ) : (
               <circle key={i} cx={x} cy={y} r="2" fill="#0a1f33" opacity="0.14" />
             ),
           )}
         </g>
+        */}
 
-        {/* ── Puntos de datos dispersos (scatter) ── */}
+        {/* ── Puntos de datos dispersos (scatter) - Comentado por limpieza visual ── */}
+        {/*
         <g fill="#0a1f33" opacity="0.1">
           {[
             [1010, 250], [1160, 190], [1290, 158], [980, 320],
@@ -123,6 +128,7 @@ export function HeroBackdrop() {
             />
           ))}
         </g>
+        */}
 
         {/* ── Ticks de eje (borde inferior izquierdo) ── */}
         <g stroke="#0a1f33" strokeWidth="1" opacity="0.12">
