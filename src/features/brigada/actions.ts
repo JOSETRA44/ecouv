@@ -1,8 +1,10 @@
 "use server";
 
 import { redirect } from "next/navigation";
+import { headers } from "next/headers";
 import { z } from "zod";
 import { createClient, createServiceClient } from "@/lib/supabase/server";
+import { verifyTurnstileToken } from "@/lib/turnstile";
 
 export interface AuthState {
   status: "idle" | "success" | "error";
@@ -37,6 +39,19 @@ function collectErrors(issues: z.ZodError["issues"]) {
   return fieldErrors;
 }
 
+async function requireTurnstile(formData: FormData): Promise<AuthState | null> {
+  const headerList = await headers();
+  const remoteIp = headerList.get("cf-connecting-ip") ?? headerList.get("x-forwarded-for") ?? undefined;
+  const ok = await verifyTurnstileToken(formData.get("cf-turnstile-response"), remoteIp);
+  if (!ok) {
+    return {
+      status: "error",
+      message: "No pudimos verificar que eres una persona. Recarga la página e inténtalo de nuevo.",
+    };
+  }
+  return null;
+}
+
 export async function signUpBrigadista(
   _prev: AuthState,
   formData: FormData,
@@ -56,6 +71,9 @@ export async function signUpBrigadista(
       fieldErrors: collectErrors(parsed.error.issues),
     };
   }
+
+  const turnstileError = await requireTurnstile(formData);
+  if (turnstileError) return turnstileError;
 
   const service = createServiceClient();
   if (!service) {
@@ -130,6 +148,9 @@ export async function signInBrigadista(
       fieldErrors: collectErrors(parsed.error.issues),
     };
   }
+
+  const turnstileError = await requireTurnstile(formData);
+  if (turnstileError) return turnstileError;
 
   const supabase = await createClient();
   const { error } = await supabase.auth.signInWithPassword(parsed.data);

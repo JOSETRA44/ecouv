@@ -1,6 +1,8 @@
 "use server";
 
+import { headers } from "next/headers";
 import { createClient } from "@/lib/supabase/server";
+import { verifyTurnstileToken } from "@/lib/turnstile";
 import { FORUM_SLUG, registrationSchema, type RegistrationState } from "./schema";
 
 export async function registerForForum(
@@ -31,6 +33,16 @@ export async function registerForForum(
   // Honeypot con contenido → respuesta de éxito falsa para el bot.
   if (parsed.data.website) {
     return { status: "success", message: "¡Inscripción registrada!" };
+  }
+
+  const headerList = await headers();
+  const remoteIp = headerList.get("cf-connecting-ip") ?? headerList.get("x-forwarded-for") ?? undefined;
+  const turnstileOk = await verifyTurnstileToken(formData.get("cf-turnstile-response"), remoteIp);
+  if (!turnstileOk) {
+    return {
+      status: "error",
+      message: "No pudimos verificar que eres una persona. Recarga la página e inténtalo de nuevo.",
+    };
   }
 
   const supabase = await createClient();

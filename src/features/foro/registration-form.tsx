@@ -6,6 +6,7 @@ import { registerForForum } from "./actions";
 import type { RegistrationState } from "./schema";
 import { Button } from "@/components/ui/button";
 import { Input, Label, Select, FieldError } from "@/components/ui/input";
+import { TurnstileWidget } from "@/components/ui/turnstile-widget";
 
 const initialState: RegistrationState = { status: "idle" };
 
@@ -92,6 +93,8 @@ export function RegistrationForm({ disabled }: { disabled?: boolean }) {
           <label htmlFor="website">No completar</label>
           <input id="website" name="website" type="text" tabIndex={-1} autoComplete="off" />
         </div>
+
+        <TurnstileWidget />
 
         {state.status === "error" && !state.fieldErrors && (
           <div className="flex items-start gap-3 rounded-card border border-[#fecaca] bg-[#fee2e2] p-4 text-sm text-[#991b1b]">

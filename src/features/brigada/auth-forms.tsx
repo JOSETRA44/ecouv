@@ -10,6 +10,7 @@ import {
 } from "./actions";
 import { Button } from "@/components/ui/button";
 import { Input, Label, FieldError } from "@/components/ui/input";
+import { TurnstileWidget } from "@/components/ui/turnstile-widget";
 
 const initialState: AuthState = { status: "idle" };
 
@@ -58,6 +59,8 @@ export function LoginForm({ next }: { next?: string }) {
         />
         <FieldError>{state.fieldErrors?.password}</FieldError>
       </div>
+
+      <TurnstileWidget />
 
       <StatusBanner state={state} />
 
@@ -138,6 +141,8 @@ export function SignUpForm() {
         />
         <FieldError>{state.fieldErrors?.password}</FieldError>
       </div>
+
+      <TurnstileWidget />
 
       <StatusBanner state={state} />
 
