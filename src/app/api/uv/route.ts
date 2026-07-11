@@ -1,58 +1,41 @@
 import { NextResponse } from "next/server";
-import { createClient, createServiceClient } from "@/lib/supabase/server";
+import { createClient } from "@/lib/supabase/server";
 
-const OPEN_METEO_URL =
-  "https://api.open-meteo.com/v1/forecast" +
-  "?latitude=-16.409&longitude=-71.537" + // Campus UNSA, Arequipa
-  "&current=uv_index&daily=uv_index_max&forecast_days=1&timezone=America%2FLima";
-
+/**
+ * Lectura pública compartida: nunca llama a Open-Meteo directamente.
+ * El único escritor es /api/cron/uv (disparado por Vercel Cron), así que
+ * el consumo de la API gratuita no depende de cuántos usuarios visiten el sitio.
+ */
 export async function GET() {
-  try {
-    const res = await fetch(OPEN_METEO_URL, { next: { revalidate: 900 } });
-    if (!res.ok) throw new Error(`open-meteo ${res.status}`);
-    const data = await res.json();
+  const supabase = await createClient();
 
-    const uvIndex = Number(data?.current?.uv_index);
-    if (Number.isNaN(uvIndex)) throw new Error("open-meteo: payload inválido");
-    const todayMax = Number(data?.daily?.uv_index_max?.[0] ?? uvIndex);
+  const { data: latest, error } = await supabase
+    .from("uv_readings")
+    .select("uv_index, taken_at")
+    .order("taken_at", { ascending: false })
+    .limit(1)
+    .maybeSingle();
 
-    // Persistencia horaria (dataset del análisis empírico) — best effort.
-    const service = createServiceClient();
-    if (service) {
-      const hour = new Date();
-      hour.setMinutes(0, 0, 0);
-      await service
-        .from("uv_readings")
-        .upsert(
-          { taken_at: hour.toISOString(), uv_index: uvIndex },
-          { onConflict: "taken_at" },
-        );
-    }
-
-    return NextResponse.json({
-      uvIndex,
-      todayMax,
-      takenAt: data?.current?.time ?? new Date().toISOString(),
-      source: "open-meteo",
-    });
-  } catch {
-    // Fallback: última lectura persistida (lectura pública).
-    const supabase = await createClient();
-    const { data } = await supabase
-      .from("uv_readings")
-      .select("uv_index, taken_at")
-      .order("taken_at", { ascending: false })
-      .limit(1)
-      .maybeSingle();
-
-    if (data) {
-      return NextResponse.json({
-        uvIndex: Number(data.uv_index),
-        todayMax: null,
-        takenAt: data.taken_at,
-        source: "cache",
-      });
-    }
+  if (error || !latest) {
     return NextResponse.json({ error: "UV no disponible" }, { status: 503 });
   }
+
+  const startOfDayLima = new Date(
+    new Date().toLocaleString("en-US", { timeZone: "America/Lima" }),
+  );
+  startOfDayLima.setHours(0, 0, 0, 0);
+
+  const { data: todayReadings } = await supabase
+    .from("uv_readings")
+    .select("uv_index")
+    .gte("taken_at", startOfDayLima.toISOString())
+    .order("uv_index", { ascending: false })
+    .limit(1);
+
+  return NextResponse.json({
+    uvIndex: Number(latest.uv_index),
+    todayMax: todayReadings?.[0] ? Number(todayReadings[0].uv_index) : null,
+    takenAt: latest.taken_at,
+    source: "supabase",
+  });
 }

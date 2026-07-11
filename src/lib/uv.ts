@@ -55,5 +55,5 @@ export interface UvPayload {
   uvIndex: number;
   todayMax: number | null;
   takenAt: string;
-  source: "open-meteo" | "cache";
+  source: "supabase";
 }

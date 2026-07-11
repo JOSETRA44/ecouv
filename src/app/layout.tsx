@@ -1,7 +1,8 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter, IBM_Plex_Mono } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { ServiceWorkerRegister } from "@/components/pwa/sw-register";
 import "./globals.css";
 
 const inter = Inter({
@@ -71,6 +72,15 @@ export const metadata: Metadata = {
     google: "54pQ5jP-F_ImfhYpsEoXOVilu9R9brGmOdE-IH9shdY",
   },
   category: "education",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "Brigada Ambiental",
+  },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#5E151D",
 };
 
 export default function RootLayout({
@@ -80,6 +90,7 @@ export default function RootLayout({
     <html lang="es">
       <body className={`${inter.variable} ${plexMono.variable} antialiased`}>
         {children}
+        <ServiceWorkerRegister />
         <Analytics />
         <SpeedInsights />
       </body>

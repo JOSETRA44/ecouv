@@ -93,7 +93,7 @@ export function UvMonitor() {
 
   /* Build rows array — only changes when todayMax changes */
   const rows = data?.todayMax != null
-    ? [...STATIC_ROWS, { icon: ArrowUp, label: "Máx. previsto hoy", value: data.todayMax.toFixed(1), bold: false }]
+    ? [...STATIC_ROWS, { icon: ArrowUp, label: "Máx. registrado hoy", value: data.todayMax.toFixed(1), bold: false }]
     : STATIC_ROWS;
 
   return (
@@ -254,9 +254,7 @@ export function UvMonitor() {
         {/* Footer */}
         <div className="px-7 pb-6 pt-2 sm:px-8">
           <p className="text-center text-[10px] leading-relaxed text-faint">
-            Fuente: Open-Meteo
-            {data?.source === "cache" && " (última lectura)"} ·
-            Dataset del análisis de externalidades del curso.
+            Fuente: Open-Meteo · Dataset del análisis de externalidades del curso.
           </p>
         </div>
       </motion.div>
