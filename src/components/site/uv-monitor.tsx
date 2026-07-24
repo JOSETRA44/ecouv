@@ -17,6 +17,13 @@ import { cn } from "@/lib/utils";
 const REFRESH_MS = 10 * 60 * 1000;
 const MAX_UV = 14;
 
+function formatAge(takenAt: string): string {
+  const minutes = Math.max(0, Math.round((Date.now() - new Date(takenAt).getTime()) / 60_000));
+  if (minutes < 60) return `hace ${minutes} min`;
+  const hours = Math.round(minutes / 60);
+  return `hace ${hours} h`;
+}
+
 /*
  * OMS gradient: color-stops at exact threshold percentages.
  *   0/14 =  0.0%  green    3/14 = 21.4%  yellow
@@ -323,13 +330,15 @@ export function UvMonitor() {
               <h3 className="microlabel text-muted">Índice UV en vivo</h3>
             </div>
             <span className="relative flex h-2.5 w-2.5" aria-label="Estado de conexión">
-              <span className={cn(
-                "absolute inline-flex h-full w-full animate-ping rounded-full opacity-60",
-                level ? level.bgClass : "bg-linea",
-              )} />
+              {!data?.stale && (
+                <span className={cn(
+                  "absolute inline-flex h-full w-full animate-ping rounded-full opacity-60",
+                  level ? level.bgClass : "bg-linea",
+                )} />
+              )}
               <span className={cn(
                 "relative inline-flex h-2.5 w-2.5 rounded-full",
-                level ? level.bgClass : "bg-linea",
+                data?.stale ? "bg-faint" : level ? level.bgClass : "bg-linea",
               )} />
             </span>
           </motion.div>
@@ -467,9 +476,15 @@ export function UvMonitor() {
 
         {/* Footer */}
         <div className="relative px-7 pb-6 pt-2 sm:px-8">
-          <p className="text-center text-[10px] leading-relaxed text-faint">
-            Fuente: Open-Meteo · Dataset del análisis de externalidades del curso.
-          </p>
+          {data?.stale ? (
+            <p className="text-center text-[10px] font-medium leading-relaxed text-uv-moderate">
+              Última actualización {formatAge(data.takenAt)} · el proveedor externo puede estar demorado.
+            </p>
+          ) : (
+            <p className="text-center text-[10px] leading-relaxed text-faint">
+              Fuente: Open-Meteo · Dataset del análisis de externalidades del curso.
+            </p>
+          )}
         </div>
       </motion.div>
     </MotionConfig>

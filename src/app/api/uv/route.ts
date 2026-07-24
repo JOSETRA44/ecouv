@@ -32,10 +32,16 @@ export async function GET() {
     .order("uv_index", { ascending: false })
     .limit(1);
 
+  const ageMinutes = (Date.now() - new Date(latest.taken_at).getTime()) / 60_000;
+
   return NextResponse.json({
     uvIndex: Number(latest.uv_index),
     todayMax: todayReadings?.[0] ? Number(todayReadings[0].uv_index) : null,
     takenAt: latest.taken_at,
+    // 3 ciclos de cron perdidos (30 min c/u): el proveedor gratuito puede
+    // tener caídas de horas, así que la UI debe poder avisar en vez de
+    // presentar un dato viejo como si fuera en vivo.
+    stale: ageMinutes > 90,
     source: "supabase",
   });
 }

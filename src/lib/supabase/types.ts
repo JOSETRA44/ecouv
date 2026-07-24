@@ -11,3 +11,4 @@ export type Activity = Tables<"activities">;
 export type ActivityAssignment = Tables<"activity_assignments">;
 export type Attendance = Tables<"attendance">;
 export type Evidence = Tables<"evidence">;
+export type Material = Tables<"materials">;

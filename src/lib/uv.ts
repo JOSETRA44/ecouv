@@ -55,5 +55,6 @@ export interface UvPayload {
   uvIndex: number;
   todayMax: number | null;
   takenAt: string;
+  stale: boolean;
   source: "supabase";
 }

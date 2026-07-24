@@ -19,6 +19,10 @@ import { AssignForm } from "@/features/coordinacion/assign-form";
 import { MemberRowActions } from "@/features/coordinacion/member-row-actions";
 import { AttendanceMarkButton } from "@/features/coordinacion/attendance-mark-button";
 import { EvidenceReviewButtons } from "@/features/coordinacion/evidence-review-buttons";
+import { listMaterialsForAdmin } from "@/features/materiales/queries";
+import { CreateMaterialForm } from "@/features/materiales/create-material-form";
+import { MaterialDeleteButton } from "@/features/materiales/material-delete-button";
+import { CATEGORY_LABEL } from "@/features/materiales/material-card";
 import { Card } from "@/components/ui/card";
 import { Select } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -65,13 +69,15 @@ export default async function CoordinacionPage({
     redirect("/brigada");
   }
 
-  const [pendingMembers, activeMembers, activities, pendingEvidence, stats] = await Promise.all([
-    listPendingMembers(supabase),
-    listActiveMembers(supabase),
-    listActivities(supabase),
-    listPendingEvidence(supabase),
-    getDashboardStats(supabase),
-  ]);
+  const [pendingMembers, activeMembers, activities, pendingEvidence, stats, materials] =
+    await Promise.all([
+      listPendingMembers(supabase),
+      listActiveMembers(supabase),
+      listActivities(supabase),
+      listPendingEvidence(supabase),
+      getDashboardStats(supabase),
+      listMaterialsForAdmin(supabase),
+    ]);
 
   const { activity: selectedActivityId } = await searchParams;
   const selectedActivity =
@@ -292,7 +298,38 @@ export default async function CoordinacionPage({
           </div>
         </section>
 
-        {/* ===== 6. Reportes ===== */}
+        {/* ===== 6. Materiales ===== */}
+        <section id="materiales">
+          <h2 className="text-lg font-semibold text-navy">
+            Materiales{" "}
+            <span className="text-sm font-normal text-muted">({materials.length})</span>
+          </h2>
+          <Card className="mt-4">
+            <CreateMaterialForm />
+          </Card>
+          <Card className="mt-4 p-0">
+            {materials.length === 0 ? (
+              <p className="p-6 text-sm text-muted">Aún no hay materiales publicados.</p>
+            ) : (
+              <ul className="divide-y divide-linea">
+                {materials.map((m) => (
+                  <li key={m.id} className="flex flex-wrap items-center justify-between gap-3 p-5">
+                    <div>
+                      <p className="font-medium text-navy">{m.title}</p>
+                      <p className="text-sm text-muted">
+                        {m.category ? CATEGORY_LABEL[m.category] ?? m.category : "Sin categoría"} ·{" "}
+                        {fmt(m.published_at)}
+                      </p>
+                    </div>
+                    <MaterialDeleteButton materialId={m.id} />
+                  </li>
+                ))}
+              </ul>
+            )}
+          </Card>
+        </section>
+
+        {/* ===== 7. Reportes ===== */}
         <section id="reportes">
           <h2 className="text-lg font-semibold text-navy">Reportes</h2>
           <p className="mt-1 text-sm text-muted">

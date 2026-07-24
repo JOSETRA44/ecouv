@@ -328,6 +328,59 @@ export type Database = {
         }
         Relationships: []
       }
+      materials: {
+        Row: {
+          category: string | null
+          cover_image_path: string | null
+          created_at: string
+          description: string
+          file_size_bytes: number
+          id: string
+          mime_type: string
+          published_at: string
+          slug: string
+          storage_path: string
+          title: string
+          uploaded_by: string | null
+        }
+        Insert: {
+          category?: string | null
+          cover_image_path?: string | null
+          created_at?: string
+          description: string
+          file_size_bytes: number
+          id?: string
+          mime_type: string
+          published_at?: string
+          slug: string
+          storage_path: string
+          title: string
+          uploaded_by?: string | null
+        }
+        Update: {
+          category?: string | null
+          cover_image_path?: string | null
+          created_at?: string
+          description?: string
+          file_size_bytes?: number
+          id?: string
+          mime_type?: string
+          published_at?: string
+          slug?: string
+          storage_path?: string
+          title?: string
+          uploaded_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "materials_uploaded_by_fkey"
+            columns: ["uploaded_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           created_at: string

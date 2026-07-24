@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import {
   ArrowRight,
   Recycle,
@@ -8,6 +9,9 @@ import { UvMonitor } from "@/components/site/uv-monitor";
 import { HeroBackdrop } from "@/components/site/hero-backdrop";
 import { Reveal } from "@/components/site/reveal";
 import { StatCounter } from "@/components/site/stat-counter";
+import { MaterialCard } from "@/features/materiales/material-card";
+import { listLatestMaterials } from "@/features/materiales/queries";
+import { createClient } from "@/lib/supabase/server";
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -21,7 +25,10 @@ const jsonLd = {
   },
 };
 
-export default function HomePage() {
+export default async function HomePage() {
+  const supabase = await createClient();
+  const materials = await listLatestMaterials(supabase, 8);
+
   return (
     <main className="relative">
       {/* ============ GRID ARQUITECTÓNICO (BLUEPRINT GLOBAL) ============ */}
@@ -333,6 +340,49 @@ export default function HomePage() {
             ))}
           </ol>
         </div>
+      </section>
+
+      {/* ============ MATERIALES ============ */}
+      <section id="materiales" className="bg-neutro py-20 lg:py-28">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <Reveal>
+            <p className="microlabel text-granate-700">Recursos de la brigada</p>
+            <h2 className="display mt-4 max-w-2xl text-4xl text-navy sm:text-5xl">
+              Materiales para difundir y aplicar.
+            </h2>
+          </Reveal>
+        </div>
+
+        {materials.length > 0 ? (
+          <Reveal delay={0.08}>
+            <div className="mt-14 flex snap-x snap-mandatory gap-5 overflow-x-auto px-4 pb-4 sm:px-6 lg:px-8">
+              {materials.map((material) => (
+                <MaterialCard
+                  key={material.id}
+                  material={material}
+                  className="w-[260px] shrink-0 snap-start sm:w-[300px]"
+                />
+              ))}
+              <Link
+                href="/materiales"
+                className="flex w-[260px] shrink-0 snap-start flex-col items-center justify-center gap-3 rounded-card border border-dashed border-granate-600/40 bg-white p-6 text-center transition-colors hover:bg-granate-50 sm:w-[300px]"
+              >
+                <span className="flex h-10 w-10 items-center justify-center rounded-full bg-granate-600 text-white">
+                  <ArrowRight className="h-4 w-4" />
+                </span>
+                <span className="text-sm font-medium text-granate-700">
+                  Más materiales
+                </span>
+              </Link>
+            </div>
+          </Reveal>
+        ) : (
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <p className="mt-14 text-sm text-muted">
+              Aún no hay materiales publicados.
+            </p>
+          </div>
+        )}
       </section>
 
       {/* ============ COORDINACIÓN ============ */}
