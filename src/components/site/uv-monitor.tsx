@@ -9,7 +9,6 @@ import {
   useMotionValue,
   useSpring,
   useTransform,
-  useReducedMotion,
 } from "motion/react";
 import { MapPin, Clock3, ArrowUp, Sun } from "lucide-react";
 import { uvLevel, type UvPayload } from "@/lib/uv";
@@ -103,7 +102,7 @@ const SPRING_RELEASE = { stiffness: 130, damping: 9, mass: 0.9 };
 const SPRING_GLARE = { stiffness: 260, damping: 30 };
 
 function useTilt3D() {
-  const reduceMotion = useReducedMotion();
+  const reduceMotion = false; // Efecto 3D 
   const [active, setActive] = useState(false);
   const rectRef = useRef<DOMRect | null>(null);
 
@@ -290,7 +289,7 @@ export function UvMonitor() {
     : STATIC_ROWS;
 
   return (
-    <MotionConfig reducedMotion="user">
+    <MotionConfig reducedMotion="never">
       <motion.div
         {...tilt.handlers}
         initial={{ opacity: 0, y: 24 }}
