@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { Download } from "lucide-react";
+import { CalendarPlus, ClipboardCheck, Download, FileUp, ImagePlus, UserCheck } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import {
   listActiveMembers,
@@ -114,6 +114,43 @@ export default async function CoordinacionPage({
             Hola, {profile.full_name?.split(" ")[0] || "coordinador"}.
           </h1>
         </div>
+
+        {/* ===== Accesos rápidos ===== */}
+        {/* Panel largo de una sola página: estos chips saltan directo a la
+            sección relevante en vez de forzar scroll manual. */}
+        <nav aria-label="Accesos rápidos" className="flex flex-wrap gap-2">
+          {[
+            {
+              href: "#pendientes",
+              label: "Aprobar miembros",
+              icon: UserCheck,
+              count: pendingMembers.length,
+            },
+            { href: "#actividades", label: "Crear actividad", icon: CalendarPlus },
+            { href: "#asistencia", label: "Marcar asistencia", icon: ClipboardCheck },
+            {
+              href: "#evidencias",
+              label: "Revisar evidencias",
+              icon: ImagePlus,
+              count: pendingEvidence.length,
+            },
+            { href: "#materiales", label: "Subir material", icon: FileUp },
+          ].map((action) => (
+            <a
+              key={action.href}
+              href={action.href}
+              className="inline-flex items-center gap-2 rounded-full border border-linea bg-white px-4 py-2 text-sm font-medium text-navy shadow-z1 transition-colors hover:border-granate-600/40 hover:bg-granate-50"
+            >
+              <action.icon className="h-4 w-4 text-granate-600" strokeWidth={1.8} />
+              {action.label}
+              {action.count ? (
+                <span className="ml-0.5 inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-granate-600 px-1.5 text-[11px] font-semibold text-white">
+                  {action.count}
+                </span>
+              ) : null}
+            </a>
+          ))}
+        </nav>
 
         {/* ===== 0. Indicadores ===== */}
         <section id="indicadores">

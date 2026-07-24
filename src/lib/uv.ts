@@ -56,5 +56,11 @@ export interface UvPayload {
   todayMax: number | null;
   takenAt: string;
   stale: boolean;
-  source: "supabase";
+  /**
+   * "supabase": leído del caché resiliente que escribe el cron cada 30 min.
+   * "live": obtenido directo por el navegador del propio visitante contra
+   * Open-Meteo — más fresco, y el costo/IP lo asume el cliente en vez del
+   * servidor (que es justamente lo que Open-Meteo empieza a limitar).
+   */
+  source: "supabase" | "live";
 }

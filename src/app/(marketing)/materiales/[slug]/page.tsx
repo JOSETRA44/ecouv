@@ -4,9 +4,12 @@ import { CalendarDays, Download } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { getMaterialBySlug, materialPublicUrl } from "@/features/materiales/queries";
 import { CATEGORY_LABEL, iconForMime } from "@/features/materiales/material-card";
+import { ShareButton } from "@/features/materiales/share-button";
 import { Badge } from "@/components/ui/badge";
 import { ButtonLink } from "@/components/ui/button";
 import { Reveal } from "@/components/site/reveal";
+
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 
 const PREVIEWABLE_MIME = new Set([
   "application/pdf",
@@ -94,10 +97,19 @@ export default async function MaterialDetailPage({
             </div>
           </dl>
 
-          <div className="mt-10">
-            <ButtonLink href={fileUrl} target="_blank" rel="noopener noreferrer">
+          <div className="mt-10 flex flex-col gap-3 sm:flex-row">
+            {/*
+             * El botón apunta a nuestra propia ruta de descarga, nunca a la
+             * URL cruda de Supabase Storage: así no se expone el endpoint del
+             * backend y la descarga se fuerza en vez de abrirse en pestaña.
+             */}
+            <ButtonLink href={`/materiales/${material.slug}/download`}>
               <Download className="h-4 w-4" /> Descargar material
             </ButtonLink>
+            <ShareButton
+              title={material.title}
+              url={`${siteUrl}/materiales/${material.slug}`}
+            />
           </div>
 
           {PREVIEWABLE_MIME.has(material.mime_type) && (

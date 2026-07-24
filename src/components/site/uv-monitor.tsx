@@ -17,6 +17,33 @@ import { cn } from "@/lib/utils";
 const REFRESH_MS = 10 * 60 * 1000;
 const MAX_UV = 14;
 
+/**
+ * Mismo endpoint que usa la Edge Function del cron, pero llamado desde el
+ * navegador del visitante: la petición sale con la IP del cliente, no la
+ * del servidor. Open-Meteo empieza a limitar tráfico de proveedores cloud
+ * (AWS/Supabase/Deno Deploy) — repartir la lectura "en vivo" entre miles de
+ * IPs de visitantes evita ese cuello de botella por completo, y el costo de
+ * esa llamada lo asume cada cliente en vez de nuestro servidor.
+ */
+const OPEN_METEO_DIRECT_URL =
+  "https://api.open-meteo.com/v1/forecast" +
+  "?latitude=-16.409&longitude=-71.537" +
+  "&current=uv_index&forecast_days=1&timezone=America%2FLima";
+
+async function fetchLiveFromOpenMeteo(): Promise<number | null> {
+  try {
+    const res = await fetch(OPEN_METEO_DIRECT_URL, { signal: AbortSignal.timeout(5000) });
+    if (!res.ok) return null;
+    const json = await res.json();
+    const uvIndex = Number(json?.current?.uv_index);
+    return Number.isNaN(uvIndex) ? null : uvIndex;
+  } catch {
+    // CORS, red del visitante, o el propio Open-Meteo caído: se resuelve
+    // con el respaldo de Supabase, nunca se deja al usuario sin dato.
+    return null;
+  }
+}
+
 function formatAge(takenAt: string): string {
   const minutes = Math.max(0, Math.round((Date.now() - new Date(takenAt).getTime()) / 60_000));
   if (minutes < 60) return `hace ${minutes} min`;
@@ -264,12 +291,31 @@ function useTilt3D() {
 /* ════════════════════════════════════════════════════
    UV Monitor
    ════════════════════════════════════════════════════ */
-export function UvMonitor() {
-  const [data, setData] = useState<UvPayload | null>(null);
+export function UvMonitor({ initialData = null }: { initialData?: UvPayload | null }) {
+  // Server-rendered de entrada: pinta el dato real del primer momento, sin
+  // el skeleton de carga que había antes de este cambio.
+  const [data, setData] = useState<UvPayload | null>(initialData);
   const [failed, setFailed] = useState(false);
   const tilt = useTilt3D();
 
   const load = useCallback(async () => {
+    // 1) Intento directo del navegador a Open-Meteo (IP del visitante).
+    const liveUvIndex = await fetchLiveFromOpenMeteo();
+    if (liveUvIndex != null) {
+      setData((prev) => ({
+        uvIndex: liveUvIndex,
+        todayMax: prev?.todayMax != null ? Math.max(prev.todayMax, liveUvIndex) : liveUvIndex,
+        takenAt: new Date().toISOString(),
+        stale: false,
+        source: "live",
+      }));
+      setFailed(false);
+      return;
+    }
+
+    // 2) Respaldo: el caché resiliente en Supabase que mantiene el cron.
+    //    Nunca se escribe de vuelta a la base de datos desde el navegador —
+    //    solo el cron autenticado en servidor persiste el historial.
     try {
       const res = await fetch("/api/uv");
       if (!res.ok) throw new Error();
@@ -277,6 +323,9 @@ export function UvMonitor() {
       setData(json);
       setFailed(false);
     } catch {
+      // `data` nunca se limpia en un fallo: si ya había algo en pantalla
+      // (inicial o de una carga anterior), sigue mostrándose tal cual — el
+      // estado "failed" solo se consulta cuando todavía no hay ningún dato.
       setFailed(true);
     }
   }, []);
@@ -479,6 +528,10 @@ export function UvMonitor() {
           {data?.stale ? (
             <p className="text-center text-[10px] font-medium leading-relaxed text-uv-moderate">
               Última actualización {formatAge(data.takenAt)} · el proveedor externo puede estar demorado.
+            </p>
+          ) : data?.source === "live" ? (
+            <p className="text-center text-[10px] leading-relaxed text-faint">
+              En vivo desde tu conexión · Open-Meteo · Dataset del análisis de externalidades del curso.
             </p>
           ) : (
             <p className="text-center text-[10px] leading-relaxed text-faint">

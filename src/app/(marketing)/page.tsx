@@ -12,6 +12,7 @@ import { StatCounter } from "@/components/site/stat-counter";
 import { MaterialCard } from "@/features/materiales/material-card";
 import { listLatestMaterials } from "@/features/materiales/queries";
 import { createClient } from "@/lib/supabase/server";
+import { getUvPayload } from "@/lib/uv-server";
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -27,7 +28,10 @@ const jsonLd = {
 
 export default async function HomePage() {
   const supabase = await createClient();
-  const materials = await listLatestMaterials(supabase, 8);
+  const [materials, uvPayload] = await Promise.all([
+    listLatestMaterials(supabase, 8),
+    getUvPayload(supabase),
+  ]);
 
   return (
     <main className="relative">
@@ -103,7 +107,7 @@ export default async function HomePage() {
           </div>
 
           <div className="flex justify-center lg:justify-end">
-            <UvMonitor />
+            <UvMonitor initialData={uvPayload} />
           </div>
         </div>
       </section>
@@ -355,25 +359,34 @@ export default async function HomePage() {
 
         {materials.length > 0 ? (
           <Reveal delay={0.08}>
-            <div className="mt-14 flex snap-x snap-mandatory gap-5 overflow-x-auto px-4 pb-4 sm:px-6 lg:px-8">
-              {materials.map((material) => (
-                <MaterialCard
-                  key={material.id}
-                  material={material}
-                  className="w-[260px] shrink-0 snap-start sm:w-[300px]"
-                />
-              ))}
-              <Link
-                href="/materiales"
-                className="flex w-[260px] shrink-0 snap-start flex-col items-center justify-center gap-3 rounded-card border border-dashed border-granate-600/40 bg-white p-6 text-center transition-colors hover:bg-granate-50 sm:w-[300px]"
-              >
-                <span className="flex h-10 w-10 items-center justify-center rounded-full bg-granate-600 text-white">
-                  <ArrowRight className="h-4 w-4" />
-                </span>
-                <span className="text-sm font-medium text-granate-700">
-                  Más materiales
-                </span>
-              </Link>
+            {/*
+             * El contenedor de scroll comparte el mismo mx-auto max-w-7xl que
+             * el título de arriba (no el viewport completo): así la primera
+             * tarjeta arranca alineada con "Materiales para difundir y
+             * aplicar." en vez de pegarse al borde crudo de la ventana en
+             * pantallas anchas.
+             */}
+            <div className="mx-auto mt-14 max-w-7xl">
+              <div className="flex snap-x snap-mandatory gap-5 overflow-x-auto px-4 pb-4 sm:px-6 lg:px-8">
+                {materials.map((material) => (
+                  <MaterialCard
+                    key={material.id}
+                    material={material}
+                    className="w-[260px] shrink-0 snap-start sm:w-[300px]"
+                  />
+                ))}
+                <Link
+                  href="/materiales"
+                  className="flex w-[260px] shrink-0 snap-start flex-col items-center justify-center gap-3 rounded-card border border-dashed border-granate-600/40 bg-white p-6 text-center transition-colors hover:bg-granate-50 sm:w-[300px]"
+                >
+                  <span className="flex h-10 w-10 items-center justify-center rounded-full bg-granate-600 text-white">
+                    <ArrowRight className="h-4 w-4" />
+                  </span>
+                  <span className="text-sm font-medium text-granate-700">
+                    Más materiales
+                  </span>
+                </Link>
+              </div>
             </div>
           </Reveal>
         ) : (
