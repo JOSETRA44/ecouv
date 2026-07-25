@@ -120,6 +120,51 @@ export default function ProfileClient({ docente }: { docente: any }) {
             </ul>
           </div>
 
+          {/* Proyectos */}
+          {docente.proyectos && docente.proyectos.length > 0 && (
+            <div className={styles.glassCard}>
+              <h3>Proyectos de Investigación</h3>
+              <ul className={styles.glassList}>
+                {docente.proyectos.map((proj: any, i: number) => (
+                  <li key={i}>
+                    <strong>{proj.titulo}</strong> <br/>
+                    {proj.inicio} - {proj.fin}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {/* Propiedad Intelectual */}
+          {docente.propiedadIntelectual && docente.propiedadIntelectual.length > 0 && (
+            <div className={styles.glassCard}>
+              <h3>Propiedad Intelectual</h3>
+              <ul className={styles.glassList}>
+                {docente.propiedadIntelectual.map((pi: any, i: number) => (
+                  <li key={i}>
+                    <strong>{pi.titulo}</strong> <br/>
+                    {pi.tipo}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {/* Tesis Asesoradas */}
+          {docente.tesisAsesoradas && docente.tesisAsesoradas.length > 0 && (
+            <div className={styles.glassCard}>
+              <h3>Tesis Asesoradas</h3>
+              <ul className={styles.glassList}>
+                {docente.tesisAsesoradas.map((tesis: any, i: number) => (
+                  <li key={i}>
+                    <strong>{tesis.tesistas}</strong> <br/>
+                    {tesis.titulo} - {tesis.fecha}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
         </section>
 
         {/* PANEL CENTRAL */}

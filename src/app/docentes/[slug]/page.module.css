@@ -249,8 +249,8 @@
 
 .characterRoot {
   position: absolute;
-  width: 110%; height: 110%;
-  bottom: 0%; left: -5%;
+  width: 140%; height: 140%;
+  bottom: 5%; left: -20%;
   z-index: 10;
   pointer-events: none;
   transition: transform 0.2s ease-out; 
