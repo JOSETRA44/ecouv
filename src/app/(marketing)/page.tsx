@@ -403,7 +403,7 @@ export default async function HomePage() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid items-center gap-12 lg:grid-cols-[0.65fr_1.35fr]">
             <Reveal>
-              <figure className="relative mx-auto w-full max-w-xs">
+              <Link href="/docentes/jose-zuzunaga" className="block relative mx-auto w-full max-w-xs transition-transform hover:scale-[1.02]">
                 <div className="overflow-hidden rounded-card border border-linea shadow-z2">
                   <Image
                     src="/brand/jose-zuzunaga.svg"
@@ -414,7 +414,7 @@ export default async function HomePage() {
                     className="h-auto w-full"
                   />
                 </div>
-              </figure>
+              </Link>
             </Reveal>
             <Reveal delay={0.1}>
               <p className="microlabel text-granate-700">Coordinación del proyecto</p>
