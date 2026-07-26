@@ -177,13 +177,11 @@ export default function ProfileClient({ docente }: { docente: any }) {
             </div>
           </div>
           <div className={styles.characterRoot} ref={charLayerRef}>
-            <Image 
-              src="/brand/jose-zuzunaga.svg" 
-              alt={docente.fullName} 
-              width={800} 
-              height={1000} 
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/brand/jose-zuzunaga.svg"
+              alt={docente.fullName}
               className={styles.characterImg}
-              unoptimized
             />
           </div>
         </section>
