@@ -53,7 +53,12 @@ export function Footer() {
 
         <div className="mt-14 flex flex-col gap-2 border-t border-linea pt-6 text-xs text-faint sm:flex-row sm:items-center sm:justify-between">
           <p>© 2026 Brigada Ambiental Universitaria — Facultad de Economía, UNSA.</p>
-          <p>Docente coordinador: José Zuzunaga Melgar</p>
+          <div className="flex flex-col sm:items-end gap-1">
+            <p>Docente coordinador: José Zuzunaga Melgar</p>
+            <p className="text-[10px] opacity-40 transition-opacity hover:opacity-100">
+              Code by <a href="https://github.com/josetra44" target="_blank" rel="noreferrer" className="hover:underline">J. Gabriel</a>
+            </p>
+          </div>
         </div>
       </div>
     </footer>
